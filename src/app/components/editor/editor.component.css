@@ -4,22 +4,8 @@
     width: 100%;
 }
 
-.right-nav {
-    display: flex;
-    align-items: center;
-    justify-content: right;
-    gap: 10px;
-}
-
 #theme-button {
     display: none;
-}
-
-.sidebar-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1em;
 }
 
 #user-button {
@@ -31,6 +17,13 @@
     align-items: center;
     justify-content: left;
     gap: 10px
+}
+
+.right-nav {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    gap: 10px;
 }
 
 .title-presentation {
@@ -47,6 +40,43 @@
     gap: 1em;
 }
 
+.sidebar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+}
+
+main {
+    flex-direction: column;
+    min-height: 100%;
+    display: flex;
+}
+
+.editor-section {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.md-editor {
+    width: 100%;
+    min-height: 50%;
+    border: 2px solid greenyellow;
+}
+
+.current-slide {
+    width: 100%;
+    min-height: 50%;
+    border: 2px solid slateblue;
+}
+
+.miniatures-section {
+    display: flex;
+    height: 150px;
+    border: 2px solid;
+}
+
 @media screen and (min-width: 500px) {
     #menu-button {
         display: none;
@@ -58,6 +88,24 @@
 
     .title-presentation {
         width: 80%;
+    }
+
+    main {
+        height: 100%;
+    }
+
+    .editor-section {
+        flex-direction: row;
+    }
+
+    .md-editor {
+        width: 50%;
+        border: 2px solid greenyellow;
+    }
+    
+    .current-slide {
+        width: 50%;
+        border: 2px solid slateblue;
     }
 
     nb-sidebar {
