@@ -33,6 +33,13 @@
     gap: 10px
 }
 
+.sidebar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+}
+
 @media screen and (min-width: 500px) {
     #menu-button {
         display: none;
@@ -40,5 +47,9 @@
 
     #theme-button {
         display: initial;
+    }
+
+    nb-sidebar {
+        display: none;
     }
 }

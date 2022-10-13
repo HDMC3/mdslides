@@ -3,7 +3,7 @@
     <nb-layout-header fixed>
         <div class="nav-container">
             <div class="left-nav">
-                <button id="menu-button" nbButton ghost>
+                <button id="menu-button" nbButton ghost (click)="toggleSidebar()">
                     <nb-icon icon="menu-outline"></nb-icon>
                 </button>
                 <h3>MDSlides</h3>
@@ -15,6 +15,14 @@
             </div>
         </div>
     </nb-layout-header>
+
+    <nb-sidebar state="collapsed" fixed>
+        <div class="sidebar-container">
+            <button nbButton shape="round" size="large" ghost (click)="changeTheme()">
+                <nb-icon [icon]="themeButtonIcon"></nb-icon>
+            </button>
+        </div>
+    </nb-sidebar>
 
     <nb-layout-column>
 

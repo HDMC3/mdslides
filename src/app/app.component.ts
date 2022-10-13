@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NbThemeService } from '@nebular/theme';
+import { NbSidebarService, NbThemeService } from '@nebular/theme';
 
 @Component({
     selector: 'app-root',
@@ -10,7 +10,10 @@ export class AppComponent {
     currentTheme: string;
     themeButtonIcon: string;
 
-    constructor(private nbThemeService: NbThemeService) {
+    constructor(
+        private nbThemeService: NbThemeService,
+        private nbSidebarService: NbSidebarService
+    ) {
         this.currentTheme = localStorage.getItem('nbTheme') ?? 'default';
         this.themeButtonIcon = this.currentTheme === 'default' ? 'moon-outline' : 'sun-outline';
         this.nbThemeService.changeTheme(this.currentTheme);
@@ -22,5 +25,9 @@ export class AppComponent {
         this.currentTheme = newTheme;
         this.nbThemeService.changeTheme(newTheme);
         this.themeButtonIcon = newTheme === 'default' ? 'moon-outline' : 'sun-outline';
+    }
+
+    toggleSidebar() {
+        this.nbSidebarService.toggle();
     }
 }
