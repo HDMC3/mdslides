@@ -1,0 +1,20 @@
+<nb-card>
+    <nb-card-header>
+        <h4>
+            Editar titulo
+        </h4>
+    </nb-card-header>
+    <nb-card-body>
+        <form [formGroup]="titleForm">
+            <label for="title">Titulo:</label>
+            <input formControlName="title" id="title" nbInput type="text" [status]="titleControlStatus" autocomplete="off">
+            <small *ngIf="!titleForm.controls['title'].valid" style="color: var(--color-danger-500)">El titulo es requerido</small>
+        </form>
+    </nb-card-body>
+    <nb-card-footer>
+        <div class="dialog-footer">
+            <button nbButton status="danger" (click)="closeDialog()">Cancelar</button>
+            <button nbButton status="success" (click)="save()">Guardar</button>
+        </div>
+    </nb-card-footer>
+</nb-card>

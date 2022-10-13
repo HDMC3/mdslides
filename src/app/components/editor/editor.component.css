@@ -33,6 +33,13 @@
     gap: 10px
 }
 
+.title-presentation {
+    width: 50%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .sidebar-container {
     display: flex;
     flex-direction: column;
@@ -47,6 +54,10 @@
 
     #theme-button {
         display: initial;
+    }
+
+    .title-presentation {
+        width: 80%;
     }
 
     nb-sidebar {
