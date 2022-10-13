@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NbThemeService } from '@nebular/theme';
 
 @Component({
     selector: 'app-root',
@@ -6,5 +7,20 @@ import { Component } from '@angular/core';
     styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-    title = 'mdslides';
+    currentTheme: string;
+    themeButtonIcon: string;
+
+    constructor(private nbThemeService: NbThemeService) {
+        this.currentTheme = localStorage.getItem('nbTheme') ?? 'default';
+        this.themeButtonIcon = this.currentTheme === 'default' ? 'moon-outline' : 'sun-outline';
+        this.nbThemeService.changeTheme(this.currentTheme);
+    }
+
+    changeTheme() {
+        const newTheme = this.currentTheme === 'default' ? 'dark' : 'default';
+        localStorage.setItem('nbTheme', newTheme);
+        this.currentTheme = newTheme;
+        this.nbThemeService.changeTheme(newTheme);
+        this.themeButtonIcon = newTheme === 'default' ? 'moon-outline' : 'sun-outline';
+    }
 }

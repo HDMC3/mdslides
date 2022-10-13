@@ -1,15 +1,23 @@
 <nb-layout>
 
-  <nb-layout-header fixed>
-  <!-- Insert header here -->
-  </nb-layout-header>
+    <nb-layout-header fixed>
+        <div class="nav-container">
+            <div class="left-nav">
+                <button id="menu-button" nbButton ghost>
+                    <nb-icon icon="menu-outline"></nb-icon>
+                </button>
+                <h3>MDSlides</h3>
+            </div>
+            <div class="right-nav">
+                <button id="theme-button" nbButton shape="round" size="large" ghost (click)="changeTheme()">
+                    <nb-icon [icon]="themeButtonIcon"></nb-icon>
+                </button>
+            </div>
+        </div>
+    </nb-layout-header>
 
-  <nb-layout-column>
-        
-  </nb-layout-column>
+    <nb-layout-column>
 
-  <nb-layout-footer fixed>
-  <!-- Insert footer here -->
-  </nb-layout-footer>
+    </nb-layout-column>
 
 </nb-layout>
