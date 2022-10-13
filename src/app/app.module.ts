@@ -6,10 +6,12 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NbThemeModule, NbLayoutModule, NbIconModule, NbButtonModule, NbSidebarModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
+import { EditorComponent } from './components/editor/editor.component';
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        EditorComponent
     ],
     imports: [
         BrowserModule,
