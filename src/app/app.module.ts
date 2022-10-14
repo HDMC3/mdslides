@@ -9,12 +9,14 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { EditorComponent } from './components/editor/editor.component';
 import { EditTitleDialogComponent } from './components/edit-title-dialog/edit-title-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MdEditorComponent } from './components/md-editor/md-editor.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         EditorComponent,
-        EditTitleDialogComponent
+        EditTitleDialogComponent,
+        MdEditorComponent
     ],
     imports: [
         BrowserModule,

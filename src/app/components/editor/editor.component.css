@@ -62,13 +62,13 @@ main {
 .md-editor {
     width: 100%;
     min-height: 50%;
-    border: 2px solid greenyellow;
+    border: 2px solid;
 }
 
 .current-slide {
     width: 100%;
     min-height: 50%;
-    border: 2px solid slateblue;
+    border: 2px solid;
 }
 
 .miniatures-section {
@@ -100,12 +100,12 @@ main {
 
     .md-editor {
         width: 50%;
-        border: 2px solid greenyellow;
+        border: 2px solid;
     }
     
     .current-slide {
         width: 50%;
-        border: 2px solid slateblue;
+        border: 2px solid;
     }
 
     nb-sidebar {
