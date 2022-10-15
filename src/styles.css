@@ -1,1 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+nb-layout-header nav.fixed {
+    box-shadow: none;
+    border-bottom: 4px solid var(--color-basic-transparent-200);
+}
+
+/* Firefox */
+.cm-scroller {
+    scrollbar-width: 1rem;
+    scrollbar-color: var(--background-basic-color-3) var(--background-basic-color-2);
+}
+/* Chrome, Safari y Edge */
+.cm-scroller::-webkit-scrollbar {
+    width: 1rem;
+}
+.cm-scroller::-webkit-scrollbar-track {
+    background: transparent;
+}
+.cm-scroller::-webkit-scrollbar-thumb {
+    background-color: var(--background-basic-color-3);
+    border-right: 0.2rem solid var(--background-basic-color-1);
+}

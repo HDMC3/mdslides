@@ -31,13 +31,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.sidebar-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1em;
+    margin: 0;
 }
 
 .sidebar-container {
@@ -48,33 +42,78 @@
 }
 
 main {
-    flex-direction: column;
-    min-height: 100%;
     display: flex;
+    flex-direction: column;
+    height: 70vh;
+    max-height: 70vh;
 }
 
 .editor-section {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
+    min-height: 100%;
+    position: relative;
+}
+
+.editor-section-divider {
+    height: 8px;
+    width: 100%;
+    background-color: var(--color-basic-600);
+    box-sizing: border-box;
+    position: relative;
+    display: none;
+}
+
+.editor-section-divider:hover {
+    cursor: row-resize;
+}
+
+.editor-section-divider::after {
+    content: "";
+    position: absolute;
+    width: 30px;
     height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--color-basic-600);
+    background-image: linear-gradient(to top, transparent 0 25%, white 25% 35%, transparent 35% 65%, white 65% 75%, transparent 75% 100%);
+}
+
+#switch-view-button {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    border-radius: 50%;
+    z-index: 1;
 }
 
 .md-editor {
     width: 100%;
-    min-height: 50%;
-    border: 2px solid;
+    height: 100%;
+    border: none;
+    animation: switchPanel 0.15s ease-in-out;
 }
 
 .current-slide {
     width: 100%;
-    min-height: 50%;
-    border: 2px solid;
+    height: 100%;
+    border: none;
+    animation: switchPanel 0.15s ease-in-out;
+}
+
+.hidde-panel {
+    display: none;
 }
 
 .miniatures-section {
     display: flex;
     height: 150px;
-    border: 2px solid;
+    border-top: 3px solid var(--color-basic-600);
+}
+
+nb-layout-column {
+    padding: 0 !important;
 }
 
 @media screen and (min-width: 500px) {
@@ -98,17 +137,49 @@ main {
         flex-direction: row;
     }
 
+    .editor-section-divider {
+        width: 8px;
+        height: 100%;
+        display: initial;
+    }
+
+    .editor-section-divider:hover {
+        cursor: col-resize;
+    }
+
+    .editor-section-divider::after {
+        width: 100%;
+        height: 30px;
+        background-image: linear-gradient(to right, transparent 0 25%, white 25% 35%, transparent 35% 65%, white 65% 75%, transparent 75% 100%);
+    }
+
     .md-editor {
+        height: 100% !important;
         width: 50%;
-        border: 2px solid;
+        border: none;
+        display: initial;
     }
     
     .current-slide {
+        height: 100%;
         width: 50%;
-        border: 2px solid;
+        border: none;
+    }
+
+    #switch-view-button {
+        display: none;
     }
 
     nb-sidebar {
         display: none;
+    }
+}
+
+@keyframes switchPanel {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
     }
 }
