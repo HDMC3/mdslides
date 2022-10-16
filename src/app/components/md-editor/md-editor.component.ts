@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Output, EventEmitter } from '@angular/core';
 import { markdown } from '@codemirror/lang-markdown';
 import { basicSetup } from 'codemirror';
 import { EditorState } from '@codemirror/state';
@@ -12,11 +12,12 @@ import { oneDarkTheme } from './editor-theme';
     styleUrls: ['./md-editor.component.css']
 })
 export class MdEditorComponent implements OnInit {
-
+    @Output() valueChange: EventEmitter<string[]>;
     editorInitialized: boolean;
 
     constructor(private elementRef: ElementRef) {
         this.editorInitialized = false;
+        this.valueChange = new EventEmitter();
     }
 
     ngOnInit(): void {
@@ -26,6 +27,8 @@ export class MdEditorComponent implements OnInit {
                 markdown({ codeLanguages: languages }),
                 EditorView.domEventHandlers({
                     keyup: (e, v) => {
+                        const editorValue = v.state.doc.toJSON();
+                        this.valueChange.emit(editorValue);
                     }
                 }),
                 EditorView.lineWrapping,

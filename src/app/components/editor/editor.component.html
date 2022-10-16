@@ -32,10 +32,12 @@
         <main>
             <section class="editor-section">
                 <div #mdEditor class="md-editor hidde-panel">
-                    <app-md-editor></app-md-editor>
+                    <app-md-editor (valueChange)="onMdEditorChangeValue($event)"></app-md-editor>
                 </div>
                 <div #divider class="editor-section-divider"></div>
-                <div #currentSlide class="current-slide"></div>
+                <div #currentSlide class="current-slide">
+                    <div class="current-slide-container"></div>
+                </div>
                 <button nbButton status="info" id="switch-view-button" (click)="switchView()">
                     <nb-icon icon="swap"></nb-icon>
                 </button>

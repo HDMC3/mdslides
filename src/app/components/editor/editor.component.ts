@@ -1,7 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, HostListener, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Marpit } from '@marp-team/marpit';
 import { NbDialogService, NbSidebarService, NbThemeService } from '@nebular/theme';
 import { take } from 'rxjs/operators';
+import { marpGaiaTheme } from 'src/app/core/marp-themes/gaia-theme';
 import { Presentation } from 'src/app/data/interfaces/presentation';
 import { EditTitleDialogComponent } from '../edit-title-dialog/edit-title-dialog.component';
 
@@ -103,6 +105,24 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         this.mdEditor.nativeElement.classList.add('hidde-panel');
         this.currentSlide.nativeElement.classList.remove('hidde-panel');
         this.isMdEditorActive = false;
+    }
+
+    onMdEditorChangeValue(editorValue: string[]) {
+        const markdown = editorValue.join('\n');
+        const marpit = new Marpit({
+            markdown: 'default'
+        });
+        marpit.markdown.set({
+            html: true
+        });
+
+        marpit.themeSet.default = marpit.themeSet.add(marpGaiaTheme);
+        const { html, css } = marpit.render(markdown);
+        if (this.currentSlide) {
+            const currentSlideContainer = this.currentSlide.nativeElement.querySelector('.current-slide-container');
+            currentSlideContainer.shadowRoot ?? currentSlideContainer.attachShadow({ mode: 'open' });
+            currentSlideContainer.shadowRoot.innerHTML = `<style>${css}\n.marpit{transform: scale(0.4);}\nsection{display: none;}\nsection[id="1"]{display: block;}\n</style>\n${html}`;
+        }
     }
 
     changeTheme() {
