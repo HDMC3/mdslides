@@ -34,10 +34,22 @@
                 <div #mdEditor class="md-editor hidde-panel">
                     <app-md-editor (valueChange)="onMdEditorChangeValue($event)"></app-md-editor>
                 </div>
+
                 <div #divider class="editor-section-divider"></div>
+
                 <div #currentSlide class="current-slide">
                     <div class="current-slide-container"></div>
+
+                    <div class="zoom-buttons">
+                        <button nbButton size="small" outline (click)="zoomSlide('min')">
+                            <nb-icon icon="minimize-outline"></nb-icon>
+                        </button>
+                        <button nbButton size="small" outline (click)="zoomSlide('max')">
+                            <nb-icon icon="maximize-outline"></nb-icon>
+                        </button>
+                    </div>
                 </div>
+
                 <button nbButton status="info" id="switch-view-button" (click)="switchView()">
                     <nb-icon icon="swap"></nb-icon>
                 </button>

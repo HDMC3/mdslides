@@ -48,7 +48,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         this.resizeObserver = new ResizeObserver(() => {
             if (window.innerWidth <= 500 && this.mdEditor && this.currentSlide) {
                 this.mdEditor.nativeElement.style = '';
-                this.currentSlide.nativeElement.style = '';
+                this.currentSlide.nativeElement.style.width = '';
             }
         });
     }
@@ -60,6 +60,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit(): void {
+        this.currentSlide?.nativeElement.style.setProperty('--zoom', `${window.innerWidth <= 500 ? '0.3' : '0.4'}`);
         this.resizeObserver.observe(document.body);
     }
 
@@ -121,8 +122,19 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.currentSlide) {
             const currentSlideContainer = this.currentSlide.nativeElement.querySelector('.current-slide-container');
             currentSlideContainer.shadowRoot ?? currentSlideContainer.attachShadow({ mode: 'open' });
-            currentSlideContainer.shadowRoot.innerHTML = `<style>${css}\n.marpit{transform: scale(0.4);}\nsection{display: none;}\nsection[id="1"]{display: block;}\n</style>\n${html}`;
+            currentSlideContainer.shadowRoot.innerHTML = `<style>${css}\n.marpit{position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(var(--zoom));}\nsection{display: none;}\nsection[id="1"]{display: block;}\n</style>\n${html}`;
         }
+    }
+
+    zoomSlide(action: 'max' | 'min') {
+        if (!this.currentSlide) return;
+
+        const ncurrentZoom = this.currentSlide?.nativeElement.style.getPropertyValue('--zoom');
+        const newZoom = action === 'max' ? Number.parseFloat(ncurrentZoom) + 0.05 : Number.parseFloat(ncurrentZoom) - 0.05;
+
+        if (newZoom > 1 || newZoom <= 0.15) return;
+
+        this.currentSlide?.nativeElement.style.setProperty('--zoom', `${newZoom}`);
     }
 
     changeTheme() {
