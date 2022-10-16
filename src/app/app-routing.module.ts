@@ -4,6 +4,10 @@ import { EditorComponent } from './components/editor/editor.component';
 
 const routes: Routes = [
     {
+        path: '',
+        component: EditorComponent
+    },
+    {
         path: ':id',
         component: EditorComponent
     }

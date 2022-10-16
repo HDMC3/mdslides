@@ -9,7 +9,7 @@
                 <button nbButton shape="round" ghost (click)="openEditTitleDialog()">
                     <nb-icon icon="edit-outline"></nb-icon>
                 </button>
-                <h4 class="title-presentation">{{presentation.title}}</h4>
+                <h4 class="title-presentation">{{presentation?.title}}</h4>
             </div>
             <div class="right-nav">
                 <button id="theme-button" nbButton shape="round" size="large" ghost (click)="changeTheme()">

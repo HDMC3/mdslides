@@ -1,17 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { v4 } from 'uuid';
+import { Component } from '@angular/core';
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
-    constructor(private router: Router) { }
-
-    ngOnInit(): void {
-        const id = v4();
-        this.router.navigate([id]);
-    }
+    constructor() { }
 }

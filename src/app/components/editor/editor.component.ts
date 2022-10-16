@@ -4,6 +4,7 @@ import { Marpit } from '@marp-team/marpit';
 import { NbDialogService, NbSidebarService, NbThemeService } from '@nebular/theme';
 import { take } from 'rxjs/operators';
 import { marpGaiaTheme } from 'src/app/core/marp-themes/gaia-theme';
+import { PresentationService } from 'src/app/core/services/presentation.service';
 import { Presentation } from 'src/app/data/interfaces/presentation';
 import { EditTitleDialogComponent } from '../edit-title-dialog/edit-title-dialog.component';
 
@@ -18,7 +19,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('currentSlide') currentSlide?: ElementRef;
     currentTheme: string;
     themeButtonIcon: string;
-    presentation: Presentation;
+    presentation?: Presentation;
     isClickDivider: boolean;
     isMdEditorActive: boolean;
     resizeObserver: ResizeObserver;
@@ -27,20 +28,12 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         private nbThemeService: NbThemeService,
         private nbSidebarService: NbSidebarService,
         private activatedRoute: ActivatedRoute,
-        private nbDialogService: NbDialogService
+        private nbDialogService: NbDialogService,
+        private presentationService: PresentationService
     ) {
         this.currentTheme = localStorage.getItem('nbTheme') ?? 'default';
         this.themeButtonIcon = this.currentTheme === 'default' ? 'moon-outline' : 'sun-outline';
         this.nbThemeService.changeTheme(this.currentTheme);
-
-        this.presentation = {
-            id: '',
-            title: 'Mi titulo',
-            description: '',
-            slides: [],
-            creation_date: new Date(),
-            modification_date: new Date()
-        };
 
         this.isClickDivider = false;
         this.isMdEditorActive = false;
@@ -55,7 +48,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnInit(): void {
         this.activatedRoute.params.pipe(take(1)).subscribe(params => {
-            this.presentation.id = params['id'];
+            this.presentation = this.presentationService.initPresentation(params['id']);
         });
     }
 
