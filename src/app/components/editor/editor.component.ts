@@ -129,8 +129,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     zoomSlide(action: 'max' | 'min') {
         if (!this.currentSlide) return;
 
-        const ncurrentZoom = this.currentSlide?.nativeElement.style.getPropertyValue('--zoom');
-        const newZoom = action === 'max' ? Number.parseFloat(ncurrentZoom) + 0.05 : Number.parseFloat(ncurrentZoom) - 0.05;
+        const currentZoom = this.currentSlide?.nativeElement.style.getPropertyValue('--zoom');
+        const newZoom = action === 'max' ? Number.parseFloat(currentZoom) + 0.05 : Number.parseFloat(currentZoom) - 0.05;
 
         if (newZoom > 1 || newZoom <= 0.15) return;
 

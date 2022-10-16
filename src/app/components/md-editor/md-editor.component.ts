@@ -3,7 +3,8 @@ import { markdown } from '@codemirror/lang-markdown';
 import { basicSetup } from 'codemirror';
 import { EditorState } from '@codemirror/state';
 import { languages } from '@codemirror/language-data';
-import { EditorView } from '@codemirror/view';
+import { EditorView, keymap } from '@codemirror/view';
+import { indentWithTab } from '@codemirror/commands';
 import { oneDarkTheme } from './editor-theme';
 
 @Component({
@@ -32,6 +33,7 @@ export class MdEditorComponent implements OnInit {
                     }
                 }),
                 EditorView.lineWrapping,
+                keymap.of([indentWithTab]),
                 oneDarkTheme
             ]
         });
