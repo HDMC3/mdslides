@@ -1,9 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, HostListener, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Marpit } from '@marp-team/marpit';
+import { Marpit, ThemeSet } from '@marp-team/marpit';
 import { NbDialogService, NbSidebarService, NbThemeService } from '@nebular/theme';
 import { take } from 'rxjs/operators';
 import { marpGaiaTheme } from 'src/app/core/marp-themes/gaia-theme';
+import { MarpitService } from 'src/app/core/services/marpit.service';
 import { PresentationService } from 'src/app/core/services/presentation.service';
 import { Presentation } from 'src/app/data/interfaces/presentation';
 import { EditTitleDialogComponent } from '../edit-title-dialog/edit-title-dialog.component';
@@ -29,7 +30,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         private nbSidebarService: NbSidebarService,
         private activatedRoute: ActivatedRoute,
         private nbDialogService: NbDialogService,
-        private presentationService: PresentationService
+        private presentationService: PresentationService,
+        private marpitService: MarpitService
     ) {
         this.currentTheme = localStorage.getItem('nbTheme') ?? 'default';
         this.themeButtonIcon = this.currentTheme === 'default' ? 'moon-outline' : 'sun-outline';
@@ -54,6 +56,10 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit(): void {
         this.currentSlide?.nativeElement.style.setProperty('--zoom', `${window.innerWidth <= 500 ? '0.3' : '0.4'}`);
+        this.presentationService.presentation.subscribe(presentation => {
+            const { html, css } = this.marpitService.render(presentation.slides[0].code);
+            this.renderSlide(html, css);
+        });
         this.resizeObserver.observe(document.body);
     }
 
@@ -102,16 +108,11 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     onMdEditorChangeValue(editorValue: string[]) {
-        const markdown = editorValue.join('\n');
-        const marpit = new Marpit({
-            markdown: 'default'
-        });
-        marpit.markdown.set({
-            html: true
-        });
+        const { html, css } = this.marpitService.render(editorValue);
+        this.renderSlide(html, css);
+    }
 
-        marpit.themeSet.default = marpit.themeSet.add(marpGaiaTheme);
-        const { html, css } = marpit.render(markdown);
+    renderSlide(html: string, css: string) {
         if (this.currentSlide) {
             const currentSlideContainer = this.currentSlide.nativeElement.querySelector('.current-slide-container');
             currentSlideContainer.shadowRoot ?? currentSlideContainer.attachShadow({ mode: 'open' });
