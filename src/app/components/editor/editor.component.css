@@ -90,7 +90,6 @@ main {
 
 .md-editor {
     width: 100%;
-    height: 100%;
     border: none;
     animation: switchPanel 0.15s ease-in-out;
 }
@@ -172,7 +171,6 @@ nb-layout-column {
     }
 
     .md-editor {
-        height: 100% !important;
         width: 50%;
         border: none;
         display: initial;

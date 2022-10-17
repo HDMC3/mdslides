@@ -43,3 +43,7 @@ nb-layout-header nav.fixed {
     border: 0.15rem solid var(--background-basic-color-3);
     border-left: 0;
 }
+
+body {
+    height: 100vh
+}

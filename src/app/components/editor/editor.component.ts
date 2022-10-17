@@ -45,6 +45,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.mdEditor.nativeElement.style = '';
                 this.currentSlide.nativeElement.style.width = '';
             }
+            this.setEditorContainerHeight();
         });
 
         // this.editorValue = '';
@@ -64,6 +65,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
             this.renderSlide(html, css);
         });
         this.resizeObserver.observe(document.body);
+        this.setEditorContainerHeight();
     }
 
     ngOnDestroy(): void {
@@ -140,6 +142,18 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         this.currentTheme = newTheme;
         this.nbThemeService.changeTheme(newTheme);
         this.themeButtonIcon = newTheme === 'default' ? 'moon-outline' : 'sun-outline';
+    }
+
+    setEditorContainerHeight() {
+        const header = document.querySelector('nb-layout-header');
+        const miniatures = document.querySelector('.miniatures-section');
+        const editor = document.querySelector<HTMLElement>('.md-editor');
+        if (header && miniatures && editor) {
+            const headerH = header.getBoundingClientRect().height;
+            const miniaturesH = miniatures.getBoundingClientRect().height;
+            const bodyH = document.body.getBoundingClientRect().height;
+            editor.style.height = `${bodyH - (headerH + miniaturesH)}px`;
+        }
     }
 
     toggleSidebar() {
