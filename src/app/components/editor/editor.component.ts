@@ -1,11 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, HostListener, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NbDialogService, NbSidebarService, NbThemeService } from '@nebular/theme';
+import { NbDialogService, NbSidebarService } from '@nebular/theme';
 import { take } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { MarpitService } from 'src/app/core/services/marpit.service';
 import { MdEditorService } from 'src/app/core/services/md-editor.service';
 import { PresentationService } from 'src/app/core/services/presentation.service';
 import { Presentation } from 'src/app/data/interfaces/presentation';
+import { ThemeService } from 'src/app/shared/services/theme.service';
 import { EditTitleDialogComponent } from '../edit-title-dialog/edit-title-dialog.component';
 
 @Component({
@@ -17,15 +19,15 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('divider') divider?: ElementRef;
     @ViewChild('mdEditor') mdEditor?: ElementRef;
     @ViewChild('currentSlide') currentSlide?: ElementRef;
-    currentTheme: string;
     themeButtonIcon: string;
     presentation?: Presentation;
     isClickDivider: boolean;
     isMdEditorActive: boolean;
     resizeObserver: ResizeObserver;
+    presentationSubscription?: Subscription;
 
     constructor(
-        private nbThemeService: NbThemeService,
+        private themeService: ThemeService,
         private nbSidebarService: NbSidebarService,
         private activatedRoute: ActivatedRoute,
         private nbDialogService: NbDialogService,
@@ -33,9 +35,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         private marpitService: MarpitService,
         private mdEditorService: MdEditorService
     ) {
-        this.currentTheme = localStorage.getItem('nbTheme') ?? 'default';
-        this.themeButtonIcon = this.currentTheme === 'default' ? 'moon-outline' : 'sun-outline';
-        this.nbThemeService.changeTheme(this.currentTheme);
+        this.themeButtonIcon = this.themeService.currentTheme === 'default' ? 'moon-outline' : 'sun-outline';
 
         this.isClickDivider = false;
         this.isMdEditorActive = false;
@@ -47,8 +47,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             this.setEditorContainerHeight();
         });
-
-        // this.editorValue = '';
     }
 
     ngOnInit(): void {
@@ -59,7 +57,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit(): void {
         this.currentSlide?.nativeElement.style.setProperty('--zoom', `${window.innerWidth <= 500 ? '0.3' : '0.4'}`);
-        this.presentationService.presentation.subscribe(presentation => {
+        this.presentationSubscription = this.presentationService.presentation.subscribe(presentation => {
             this.mdEditorService.changeEditorValue(presentation.slides[0].code);
             const { html, css } = this.marpitService.render(presentation.slides[0].code);
             this.renderSlide(html, css);
@@ -70,6 +68,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.resizeObserver.disconnect();
+        this.presentationSubscription?.unsubscribe();
     }
 
     @HostListener('pointermove', ['$event'])
@@ -137,11 +136,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     changeTheme() {
-        const newTheme = this.currentTheme === 'default' ? 'dark' : 'default';
-        localStorage.setItem('nbTheme', newTheme);
-        this.currentTheme = newTheme;
-        this.nbThemeService.changeTheme(newTheme);
-        this.themeButtonIcon = newTheme === 'default' ? 'moon-outline' : 'sun-outline';
+        this.themeService.changeTheme();
+        this.themeButtonIcon = this.themeService.currentTheme === 'default' ? 'moon-outline' : 'sun-outline';
     }
 
     setEditorContainerHeight() {
