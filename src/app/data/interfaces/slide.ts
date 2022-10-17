@@ -1,5 +1,5 @@
 export interface Slide {
     id: string;
-    code: string[] | string;
+    code: string[];
     name: string;
 }

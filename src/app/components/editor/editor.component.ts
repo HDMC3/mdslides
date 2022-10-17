@@ -1,10 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, HostListener, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Marpit, ThemeSet } from '@marp-team/marpit';
 import { NbDialogService, NbSidebarService, NbThemeService } from '@nebular/theme';
 import { take } from 'rxjs/operators';
-import { marpGaiaTheme } from 'src/app/core/marp-themes/gaia-theme';
 import { MarpitService } from 'src/app/core/services/marpit.service';
+import { MdEditorService } from 'src/app/core/services/md-editor.service';
 import { PresentationService } from 'src/app/core/services/presentation.service';
 import { Presentation } from 'src/app/data/interfaces/presentation';
 import { EditTitleDialogComponent } from '../edit-title-dialog/edit-title-dialog.component';
@@ -31,7 +30,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private nbDialogService: NbDialogService,
         private presentationService: PresentationService,
-        private marpitService: MarpitService
+        private marpitService: MarpitService,
+        private mdEditorService: MdEditorService
     ) {
         this.currentTheme = localStorage.getItem('nbTheme') ?? 'default';
         this.themeButtonIcon = this.currentTheme === 'default' ? 'moon-outline' : 'sun-outline';
@@ -46,6 +46,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.currentSlide.nativeElement.style.width = '';
             }
         });
+
+        // this.editorValue = '';
     }
 
     ngOnInit(): void {
@@ -57,6 +59,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit(): void {
         this.currentSlide?.nativeElement.style.setProperty('--zoom', `${window.innerWidth <= 500 ? '0.3' : '0.4'}`);
         this.presentationService.presentation.subscribe(presentation => {
+            this.mdEditorService.changeEditorValue(presentation.slides[0].code);
             const { html, css } = this.marpitService.render(presentation.slides[0].code);
             this.renderSlide(html, css);
         });

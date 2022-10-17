@@ -11,7 +11,7 @@ export const getDefaultPresentation = (id: string): Presentation => {
         slides: [
             {
                 id: v4(),
-                name: 'Presentacion inicial',
+                name: 'Presentación inicial',
                 code: [
                     '---',
                     'style: |',
@@ -23,7 +23,7 @@ export const getDefaultPresentation = (id: string): Presentation => {
                     '   }',
                     '---',
                     '',
-                    '# Inicio de la presentacion',
+                    '# Inicio de la presentación',
                     '# 😄✌'
                 ]
             }
