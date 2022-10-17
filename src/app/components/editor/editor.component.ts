@@ -119,7 +119,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.currentSlide) {
             const currentSlideContainer = this.currentSlide.nativeElement.querySelector('.current-slide-container');
             currentSlideContainer.shadowRoot ?? currentSlideContainer.attachShadow({ mode: 'open' });
-            currentSlideContainer.shadowRoot.innerHTML = `<style>${css}\n.marpit{position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(var(--zoom));}\nsection{display: none;}\nsection[id="1"]{display: block;}\n</style>\n${html}`;
+            currentSlideContainer.shadowRoot.innerHTML = `<style>${css}\n.marpit{position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(var(--zoom)); box-shadow: var(--shadow);}\nsection{display: none;}\nsection[id="1"]{display: block;}\n</style>\n${html}`;
         }
     }
 
