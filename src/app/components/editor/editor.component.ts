@@ -19,6 +19,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('divider') divider?: ElementRef;
     @ViewChild('mdEditor') mdEditor?: ElementRef;
     @ViewChild('currentSlide') currentSlide?: ElementRef;
+    @ViewChild('miniatureSlides') miniatureSlides?: ElementRef<HTMLElement>;
     themeButtonIcon: string;
     presentation?: Presentation;
     isClickDivider: boolean;
@@ -114,14 +115,23 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     onMdEditorChangeValue(editorValue: string[]) {
         const { html, css } = this.marpitService.render(editorValue);
         this.renderSlide(html, css);
+        this.renderMiniatures(html, css);
     }
 
     renderSlide(html: string, css: string) {
-        if (this.currentSlide) {
-            const currentSlideContainer = this.currentSlide.nativeElement.querySelector('.current-slide-container');
-            currentSlideContainer.shadowRoot ?? currentSlideContainer.attachShadow({ mode: 'open' });
-            currentSlideContainer.shadowRoot.innerHTML = `<style>${css}\n.marpit{position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(var(--zoom)); box-shadow: var(--shadow);}\nsection{display: none;}\nsection[id="1"]{display: block;}\n</style>\n${html}`;
-        }
+        if (!this.currentSlide) return;
+        const currentSlideContainer = this.currentSlide.nativeElement.querySelector('.current-slide-container');
+        if (!currentSlideContainer) return;
+        let shadowRoot = currentSlideContainer.shadowRoot;
+        if (!shadowRoot) shadowRoot = currentSlideContainer.attachShadow({ mode: 'open' });
+        shadowRoot.innerHTML = `<style>${css}\n.marpit{position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(var(--zoom)); box-shadow: var(--shadow);}</style>\n${html}`;
+        shadowRoot.querySelectorAll('section').forEach((el: any) => {
+            if (el.id !== '1') el.remove();
+        });
+    }
+
+    renderMiniatures(html: string, css: string) {
+
     }
 
     zoomSlide(action: 'max' | 'min') {

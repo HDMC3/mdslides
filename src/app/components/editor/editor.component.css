@@ -50,8 +50,8 @@ main {
 .editor-section {
     display: flex;
     flex-direction: column-reverse;
-    height: calc(100% - 9rem);
-    max-height: calc(100% - 9rem);
+    height: calc(100% - 10rem);
+    max-height: calc(100% - 10rem);
     position: relative;
 }
 
@@ -124,9 +124,68 @@ main {
 
 .miniatures-section {
     display: flex;
-    height: 9rem;
-    max-height: 9rem;
+    height: 10rem;
+    max-height: 10rem;
     border-top: 3px solid var(--color-basic-600);
+    overflow-x: scroll;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1rem;
+    gap: 2rem;
+    position: relative;
+}
+
+.miniature-slide-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem;
+    height: 100%;
+    max-width: 10rem;
+    border: 2px solid var(--color-basic-600);
+    border-radius: 0.2rem;
+    position: relative;
+    overflow-wrap: break-word;
+    background: var(--background-basic-color-1);
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: bold;
+}
+
+.miniature-slide-card:hover {
+    background-color: var(--background-basic-color-4);
+}
+
+.miniature-slide-card:active {
+    background-color: var(--background-basic-color-2);
+}
+
+.miniature-slide-number {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0 0.5rem; 
+    border-left: 2px solid var(--color-basic-600);
+    border-bottom: 2px solid var(--color-basic-600);
+    border-radius: 0 0 0 0.2rem;
+    background-color: var(--background-basic-color-1);
+}
+
+.miniature-new-slide {
+    z-index: 1;
+    box-shadow: 0 0 0 1rem var(--background-basic-color-3);
+    position: sticky;
+    left: 0rem;
+    flex-shrink: 0;
+    flex-direction: column;
+    width: 7rem;
+    height: 6rem;
+    background-color: var(--background-basic-color-3);
+}
+
+.miniature-new-slide:active {
+    background-color: var(--background-basic-color-2);
 }
 
 nb-layout-column {

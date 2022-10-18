@@ -10,13 +10,15 @@ import { EditorComponent } from './components/editor/editor.component';
 import { EditTitleDialogComponent } from './components/edit-title-dialog/edit-title-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MdEditorComponent } from './components/md-editor/md-editor.component';
+import { MaxLengthPipe } from './shared/pipes/max-length.pipe';
 
 @NgModule({
     declarations: [
         AppComponent,
         EditorComponent,
         EditTitleDialogComponent,
-        MdEditorComponent
+        MdEditorComponent,
+        MaxLengthPipe
     ],
     imports: [
         BrowserModule,

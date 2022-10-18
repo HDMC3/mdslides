@@ -28,7 +28,7 @@
     </nb-sidebar>
 
     <nb-layout-column>
-        
+
         <main>
             <section class="editor-section">
                 <div #mdEditor class="md-editor hidde-panel">
@@ -41,10 +41,10 @@
                     <div class="current-slide-container"></div>
 
                     <div class="zoom-buttons">
-                        <button nbButton size="small" outline (click)="zoomSlide('min')">
+                        <button nbButton size="medium" outline (click)="zoomSlide('min')">
                             <nb-icon icon="minimize-outline"></nb-icon>
                         </button>
-                        <button nbButton size="small" outline (click)="zoomSlide('max')">
+                        <button nbButton size="medium" outline (click)="zoomSlide('max')">
                             <nb-icon icon="maximize-outline"></nb-icon>
                         </button>
                     </div>
@@ -54,7 +54,16 @@
                     <nb-icon icon="swap"></nb-icon>
                 </button>
             </section>
-            <section class="miniatures-section"></section>
+            <section #miniatureSlides class="miniatures-section">
+                <div class="miniature-slide-card miniature-new-slide">
+                    <nb-icon style="height: 3rem; width: 3rem; color: currentColor" icon="plus-outline"></nb-icon>
+                    Nueva
+                </div>
+                <div *ngFor="let slide of presentation?.slides; let i=index" class="miniature-slide-card">
+                    <span class="miniature-slide-number">{{ i + 1 }}</span>
+                    {{ slide.name | maxLength: 40 }}
+                </div>
+            </section>
         </main>
     </nb-layout-column>
 

@@ -22,23 +22,23 @@ nb-layout-header nav.fixed {
 }
 
 /* Firefox */
-.current-slide-container {
+.current-slide-container, .miniatures-section {
     scrollbar-width: 1rem;
     scrollbar-color: var(--background-basic-color-1) var(--background-basic-color-3);
 }
 /* Chrome, Safari y Edge */
-.current-slide-container::-webkit-scrollbar {
+.current-slide-container::-webkit-scrollbar, .miniatures-section::-webkit-scrollbar {
     width: 1rem;
 }
-.current-slide-container::-webkit-scrollbar-track {
+.current-slide-container::-webkit-scrollbar-track, .miniatures-section::-webkit-scrollbar-track {
     background: transparent;
 }
-.current-slide-container::-webkit-scrollbar-thumb {
+.current-slide-container::-webkit-scrollbar-thumb, .miniatures-section::-webkit-scrollbar-thumb {
     background-color: var(--background-basic-color-1);
     border: 0.15rem solid var(--background-basic-color-3);
 }
 
-.current-slide-container::-webkit-scrollbar-corner {
+.current-slide-container::-webkit-scrollbar-corner, .miniatures-section::-webkit-scrollbar-corner {
     background-color: var(--background-basic-color-1);
     border: 0.15rem solid var(--background-basic-color-3);
     border-left: 0;
