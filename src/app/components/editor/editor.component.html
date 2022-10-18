@@ -55,11 +55,11 @@
                 </button>
             </section>
             <section #miniatureSlides class="miniatures-section">
-                <div class="miniature-slide-card miniature-new-slide" (click)="newSlide()">
+                <button id="new-slide-button" class="new-slide-button" (click)="newSlide()">
                     <nb-icon style="height: 3rem; width: 3rem; color: currentColor" icon="plus-outline"></nb-icon>
                     Nueva
-                </div>
-                <div *ngFor="let slide of presentation?.slides; let i=index" class="miniature-slide-card">
+                </button>
+                <div #slideElement *ngFor="let slide of presentation?.slides; let i=index" class="miniature-slide-card" (click)="selectMiniatureSlide(slide, slideElement)">
                     <span class="miniature-slide-number">{{ i + 1 }}</span>
                     {{ slide.name | maxLength: 40 }}
                 </div>
