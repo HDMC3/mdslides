@@ -1,7 +1,7 @@
 import { v4 } from 'uuid';
-import { Presentation } from '../data/interfaces/presentation';
+import { Presentation } from '../../data/interfaces/presentation';
 
-export const getDefaultPresentation = (id: string): Presentation => {
+export const getInitialPresentation = (id: string): Presentation => {
     return {
         id,
         title: 'Titulo de presentacion',

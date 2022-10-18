@@ -2,7 +2,6 @@ import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, HostListener, 
 import { ActivatedRoute } from '@angular/router';
 import { NbDialogService, NbSidebarService } from '@nebular/theme';
 import { take } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
 import { MarpitService } from 'src/app/core/services/marpit.service';
 import { MdEditorService } from 'src/app/core/services/md-editor.service';
 import { PresentationService } from 'src/app/core/services/presentation.service';
@@ -25,7 +24,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     isClickDivider: boolean;
     isMdEditorActive: boolean;
     resizeObserver: ResizeObserver;
-    presentationSubscription?: Subscription;
 
     constructor(
         private themeService: ThemeService,
@@ -58,7 +56,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit(): void {
         this.currentSlide?.nativeElement.style.setProperty('--zoom', `${window.innerWidth <= 500 ? '0.3' : '0.4'}`);
-        this.presentationSubscription = this.presentationService.presentation.subscribe(presentation => {
+        this.presentationService.initial$.pipe(take(1)).subscribe(presentation => {
             this.mdEditorService.changeEditorValue(presentation.slides[0].code);
             const { html, css } = this.marpitService.render(presentation.slides[0].code);
             this.renderSlide(html, css);
@@ -69,7 +67,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.resizeObserver.disconnect();
-        this.presentationSubscription?.unsubscribe();
     }
 
     @HostListener('pointermove', ['$event'])
@@ -115,7 +112,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     onMdEditorChangeValue(editorValue: string[]) {
         const { html, css } = this.marpitService.render(editorValue);
         this.renderSlide(html, css);
-        this.renderMiniatures(html, css);
     }
 
     renderSlide(html: string, css: string) {
@@ -130,8 +126,12 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
-    renderMiniatures(html: string, css: string) {
-
+    newSlide() {
+        const newSlide = this.presentationService.createSlide();
+        this.presentation?.slides.push(newSlide);
+        this.mdEditorService.changeEditorValue(newSlide.code);
+        const { html, css } = this.marpitService.render(newSlide.code);
+        this.renderSlide(html, css);
     }
 
     zoomSlide(action: 'max' | 'min') {

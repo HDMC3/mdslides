@@ -56,6 +56,7 @@ export class MdEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit(): void {
         this.editorValueSubscription = this.mdEditorValue.editorValue.subscribe(value => {
+            this.editorView?.dispatch({ changes: { from: 0, to: this.editorView.state.doc.length } });
             const changes = value.map((line, i) => {
                 const change: ChangeSpec = {
                     from: 0, insert: line + '\n'

@@ -3,36 +3,58 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Presentation } from 'src/app/data/interfaces/presentation';
 import { v4 } from 'uuid';
-import { getDefaultPresentation } from '../default-presentation';
+import { getInitialPresentation } from '../default-models/initial-presentation';
+import { getNewSlide } from '../default-models/new-slide';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PresentationService {
-    private _presentation: BehaviorSubject<Presentation>;
-    private DEFAULT_PRESENTATION: Presentation;
+    private _presentation$: BehaviorSubject<Presentation>;
+    private presentation: Presentation;
 
     constructor(private location: Location) {
-        this.DEFAULT_PRESENTATION = getDefaultPresentation(v4());
-        this._presentation = new BehaviorSubject<Presentation>(this.DEFAULT_PRESENTATION);
+        this.presentation = getInitialPresentation(v4());
+        this._presentation$ = new BehaviorSubject<Presentation>(this.presentation);
     }
 
     initPresentation(id: string) {
-        const storagePresentation = localStorage.getItem(id);
-        if (storagePresentation) {
-            const presentation: Presentation = JSON.parse(storagePresentation);
-            this._presentation.next(presentation);
-            return presentation;
+        const storagePresentationStr = localStorage.getItem(id);
+        if (storagePresentationStr) {
+            const storagePresentation = JSON.parse(storagePresentationStr);
+            this._presentation$.next(storagePresentation);
+            this.presentation = storagePresentation;
+            return storagePresentation;
         }
 
-        this.location.replaceState(`/${this.DEFAULT_PRESENTATION.id}`);
-        localStorage.setItem(this.DEFAULT_PRESENTATION.id, JSON.stringify(this.DEFAULT_PRESENTATION));
-        this._presentation.next(this.DEFAULT_PRESENTATION);
-        return this.DEFAULT_PRESENTATION;
-
+        this.location.replaceState(`/${this.presentation.id}`);
+        this.updateStorage(this.presentation);
+        this._presentation$.next(this.presentation);
+        return this.presentation;
     }
 
-    get presentation() {
-        return this._presentation.asObservable();
+    createSlide() {
+        const storagePresentation = this.getPresentationStorage();
+        const newSlide = getNewSlide();
+        storagePresentation.slides.push(newSlide);
+        this.updateStorage(storagePresentation);
+        return newSlide;
+    }
+
+    getPresentationStorage() {
+        const storagePresentationStr = localStorage.getItem(this.presentation.id);
+        if (!storagePresentationStr) throw new Error('Problema al crear diapositiva');
+        const storagePresentation: Presentation = JSON.parse(storagePresentationStr);
+        return storagePresentation;
+    }
+
+    updateStorage(presentation: Presentation) {
+        this.presentation = presentation;
+        const presentationStr = JSON.stringify(presentation);
+        localStorage.setItem(presentation.id, presentationStr);
+    }
+
+    get initial$() {
+        return this._presentation$.asObservable();
     }
 }
