@@ -60,6 +60,9 @@
                     Nueva
                 </button>
                 <div #slideElement *ngFor="let slide of presentation?.slides; let i=index" class="miniature-slide-card" (click)="selectMiniatureSlide(slide, slideElement)">
+                    <button [style.position]="'absolute'" class="delete-slide-button" (click)="deleteSlide($event, i)">
+                        <nb-icon icon="trash-outline"></nb-icon>
+                    </button>
                     <span class="miniature-slide-number">{{ i + 1 }}</span>
                     {{ slide.name | maxLength: 40 }}
                 </div>

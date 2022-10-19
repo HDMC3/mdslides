@@ -143,9 +143,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     selectMiniatureSlide(slide: Slide, slideElement: HTMLElement) {
         this.selectedSlide = slide;
-        this.selectedSlideElement?.classList.remove('selected-slide');
-        slideElement.classList.add('selected-slide');
-        this.selectedSlideElement = slideElement;
+        this.changeSelectedElement(slideElement);
         this.setEditorValue(slide.code);
     }
 
@@ -164,6 +162,32 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         if (newZoom > 1 || newZoom <= 0.15) return;
 
         this.currentSlide?.nativeElement.style.setProperty('--zoom', `${newZoom}`);
+    }
+
+    deleteSlide(e: MouseEvent, indexSlide: number) {
+        e.stopPropagation();
+
+        if (!this.presentation || !this.miniatureSlides || !this.selectedSlideElement) return;
+
+        const slideElements = this.miniatureSlides.nativeElement.querySelectorAll<HTMLElement>('.miniature-slide-card');
+
+        const newSelectedSlideElement = indexSlide === slideElements.length - 1
+            ? slideElements[slideElements.length - 2]
+            : slideElements[indexSlide + 1];
+
+        const newSelectedSlide = indexSlide === slideElements.length - 1
+            ? this.presentation.slides[indexSlide - 1]
+            : this.presentation.slides[indexSlide + 1];
+
+        this.selectMiniatureSlide(newSelectedSlide, newSelectedSlideElement);
+        this.presentation.slides.splice(indexSlide, 1);
+        this.presentationService.updateStorage(this.presentation);
+    }
+
+    changeSelectedElement(newSelectedElement: HTMLElement) {
+        this.selectedSlideElement?.classList.remove('selected-slide');
+        newSelectedElement.classList.add('selected-slide');
+        this.selectedSlideElement = newSelectedElement;
     }
 
     changeTheme() {
