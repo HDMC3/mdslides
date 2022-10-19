@@ -25,6 +25,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     isClickDivider: boolean;
     isMdEditorActive: boolean;
     resizeObserver: ResizeObserver;
+    selectedSlide?: Slide;
     selectedSlideElement?: HTMLElement;
 
     constructor(
@@ -53,6 +54,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnInit(): void {
         this.activatedRoute.params.pipe(take(1)).subscribe(params => {
             this.presentation = this.presentationService.initPresentation(params['id']);
+            this.selectedSlide = this.presentation?.slides[0];
         });
     }
 
@@ -117,6 +119,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     onMdEditorChangeValue(editorValue: string[]) {
         const { html, css } = this.marpitService.render(editorValue);
         this.renderSlide(html, css);
+        if (this.selectedSlide) this.selectedSlide.code = editorValue;
+        if (this.presentation) this.presentationService.updateStorage(this.presentation);
     }
 
     renderSlide(html: string, css: string) {
@@ -138,6 +142,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     selectMiniatureSlide(slide: Slide, slideElement: HTMLElement) {
+        this.selectedSlide = slide;
         this.selectedSlideElement?.classList.remove('selected-slide');
         slideElement.classList.add('selected-slide');
         this.selectedSlideElement = slideElement;
