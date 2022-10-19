@@ -5,6 +5,7 @@ import { take } from 'rxjs/operators';
 import { MarpitService } from 'src/app/core/services/marpit.service';
 import { MdEditorService } from 'src/app/core/services/md-editor.service';
 import { PresentationService } from 'src/app/core/services/presentation.service';
+import { EditorChangeData } from 'src/app/core/types/editor-change-data';
 import { Presentation } from 'src/app/data/interfaces/presentation';
 import { Slide } from 'src/app/data/interfaces/slide';
 import { ThemeService } from 'src/app/shared/services/theme.service';
@@ -60,13 +61,18 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit(): void {
         this.currentSlide?.nativeElement.style.setProperty('--zoom', `${window.innerWidth <= 500 ? '0.3' : '0.4'}`);
+
         this.presentationService.initial$.pipe(take(1)).subscribe(presentation => {
-            this.setEditorValue(presentation.slides[0].code);
+            this.setEditorValue({ value: presentation.slides[0].code, clearEditor: true });
             const firstMiniature = document.querySelector<HTMLElement>('div.miniature-slide-card');
             if (firstMiniature) {
                 firstMiniature?.classList.add('selected-slide');
                 this.selectedSlideElement = firstMiniature;
             }
+        });
+
+        this.mdEditorService.editorValue.subscribe(editorChangeData => {
+            this.onMdEditorChangeValue(editorChangeData.value);
         });
         this.resizeObserver.observe(document.body);
         this.setEditorContainerHeight();
@@ -138,18 +144,18 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     newSlide() {
         const newSlide = this.presentationService.createSlide();
         this.presentation?.slides.push(newSlide);
-        this.setEditorValue(newSlide.code);
+        this.setEditorValue({ value: newSlide.code, clearEditor: true });
     }
 
     selectMiniatureSlide(slide: Slide, slideElement: HTMLElement) {
         this.selectedSlide = slide;
         this.changeSelectedElement(slideElement);
-        this.setEditorValue(slide.code);
+        this.setEditorValue({ value: slide.code, clearEditor: true });
     }
 
-    setEditorValue(newValue: string[]) {
-        this.mdEditorService.changeEditorValue(newValue);
-        const { html, css } = this.marpitService.render(newValue);
+    setEditorValue(newEditorData: EditorChangeData) {
+        this.mdEditorService.changeEditorValue(newEditorData);
+        const { html, css } = this.marpitService.render(newEditorData.value);
         this.renderSlide(html, css);
     }
 

@@ -23,7 +23,7 @@ export class MdEditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     constructor(
         private elementRef: ElementRef,
-        private mdEditorValue: MdEditorService
+        private mdEditorService: MdEditorService
     ) {
         this.editorInitialized = false;
         this.valueChange = new EventEmitter();
@@ -35,9 +35,9 @@ export class MdEditorComponent implements OnInit, AfterViewInit, OnDestroy {
                 basicSetup,
                 markdown({ codeLanguages: languages }),
                 EditorView.domEventHandlers({
-                    keyup: (e, v) => {
+                    keyup: (_, v) => {
                         const editorValue = v.state.doc.toJSON();
-                        this.valueChange.emit(editorValue);
+                        this.mdEditorService.changeEditorValue({ value: editorValue, clearEditor: false });
                     }
                 }),
                 EditorView.lineWrapping,
@@ -55,9 +55,10 @@ export class MdEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit(): void {
-        this.editorValueSubscription = this.mdEditorValue.editorValue.subscribe(value => {
+        this.editorValueSubscription = this.mdEditorService.editorValue.subscribe(editorChangeData => {
+            if (!editorChangeData.clearEditor) return;
             this.editorView?.dispatch({ changes: { from: 0, to: this.editorView.state.doc.length } });
-            const changes = value.map((line, i) => {
+            const changes = editorChangeData.value.map((line, i) => {
                 const change: ChangeSpec = {
                     from: 0, insert: line + '\n'
                 };
