@@ -11,6 +11,7 @@ import { EditTitleDialogComponent } from './components/edit-title-dialog/edit-ti
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MdEditorComponent } from './components/md-editor/md-editor.component';
 import { MaxLengthPipe } from './shared/pipes/max-length.pipe';
+import { CurrentSlideComponent } from './components/current-slide/current-slide.component';
 
 @NgModule({
     declarations: [
@@ -18,7 +19,8 @@ import { MaxLengthPipe } from './shared/pipes/max-length.pipe';
         EditorComponent,
         EditTitleDialogComponent,
         MdEditorComponent,
-        MaxLengthPipe
+        MaxLengthPipe,
+        CurrentSlideComponent
     ],
     imports: [
         BrowserModule,

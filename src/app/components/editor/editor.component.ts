@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, HostListener, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NbDialogService, NbSidebarService } from '@nebular/theme';
+import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { MarpitService } from 'src/app/core/services/marpit.service';
 import { MdEditorService } from 'src/app/core/services/md-editor.service';
@@ -19,7 +20,7 @@ import { EditTitleDialogComponent } from '../edit-title-dialog/edit-title-dialog
 export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('divider') divider?: ElementRef;
     @ViewChild('mdEditor') mdEditor?: ElementRef;
-    @ViewChild('currentSlide') currentSlide?: ElementRef;
+    @ViewChild('currentSlide', { read: ElementRef }) currentSlide?: ElementRef;
     @ViewChild('miniatureSlides') miniatureSlides?: ElementRef<HTMLElement>;
     themeButtonIcon: string;
     presentation?: Presentation;
@@ -28,6 +29,9 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     resizeObserver: ResizeObserver;
     selectedSlide?: Slide;
     selectedSlideElement?: HTMLElement;
+    currentSlideHtml?: string;
+    currentSlideCss?: string;
+    editorValueSubscription?: Subscription;
 
     constructor(
         private themeService: ThemeService,
@@ -60,8 +64,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit(): void {
-        this.currentSlide?.nativeElement.style.setProperty('--zoom', `${window.innerWidth <= 500 ? '0.3' : '0.4'}`);
-
         this.presentationService.initial$.pipe(take(1)).subscribe(presentation => {
             this.setEditorValue({ value: presentation.slides[0].code, clearEditor: true });
             const firstMiniature = document.querySelector<HTMLElement>('div.miniature-slide-card');
@@ -71,7 +73,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         });
 
-        this.mdEditorService.editorValue.subscribe(editorChangeData => {
+        this.editorValueSubscription = this.mdEditorService.editorValue.subscribe(editorChangeData => {
             this.onMdEditorChangeValue(editorChangeData.value);
         });
         this.resizeObserver.observe(document.body);
@@ -80,6 +82,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.resizeObserver.disconnect();
+        this.editorValueSubscription?.unsubscribe();
     }
 
     @HostListener('pointermove', ['$event'])
@@ -124,21 +127,10 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     onMdEditorChangeValue(editorValue: string[]) {
         const { html, css } = this.marpitService.render(editorValue);
-        this.renderSlide(html, css);
+        this.currentSlideHtml = html;
+        this.currentSlideCss = css;
         if (this.selectedSlide) this.selectedSlide.code = editorValue;
         if (this.presentation) this.presentationService.updateStorage(this.presentation);
-    }
-
-    renderSlide(html: string, css: string) {
-        if (!this.currentSlide) return;
-        const currentSlideContainer = this.currentSlide.nativeElement.querySelector('.current-slide-container');
-        if (!currentSlideContainer) return;
-        let shadowRoot = currentSlideContainer.shadowRoot;
-        if (!shadowRoot) shadowRoot = currentSlideContainer.attachShadow({ mode: 'open' });
-        shadowRoot.innerHTML = `<style>${css}\n.marpit{position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(var(--zoom)); box-shadow: var(--shadow);}</style>\n${html}`;
-        shadowRoot.querySelectorAll('section').forEach((el: any) => {
-            if (el.id !== '1') el.remove();
-        });
     }
 
     newSlide() {
@@ -156,18 +148,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     setEditorValue(newEditorData: EditorChangeData) {
         this.mdEditorService.changeEditorValue(newEditorData);
         const { html, css } = this.marpitService.render(newEditorData.value);
-        this.renderSlide(html, css);
-    }
-
-    zoomSlide(action: 'max' | 'min') {
-        if (!this.currentSlide) return;
-
-        const currentZoom = this.currentSlide?.nativeElement.style.getPropertyValue('--zoom');
-        const newZoom = action === 'max' ? Number.parseFloat(currentZoom) + 0.05 : Number.parseFloat(currentZoom) - 0.05;
-
-        if (newZoom > 1 || newZoom <= 0.15) return;
-
-        this.currentSlide?.nativeElement.style.setProperty('--zoom', `${newZoom}`);
+        this.currentSlideHtml = html;
+        this.currentSlideCss = css;
     }
 
     deleteSlide(e: MouseEvent, indexSlide: number) {
