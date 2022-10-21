@@ -4,6 +4,7 @@ import { NbComponentOrCustomStatus, NbDialogRef } from '@nebular/theme';
 import { Subscription } from 'rxjs';
 import { FormValidators } from 'src/app/shared/form-validators';
 import { Presentation } from 'src/app/data/interfaces/presentation';
+import { PresentationService } from 'src/app/core/services/presentation.service';
 
 @Component({
     selector: 'app-edit-title-dialog',
@@ -17,7 +18,10 @@ export class EditTitleDialogComponent implements OnInit, OnDestroy {
     titleControlStatus: NbComponentOrCustomStatus = 'basic';
     formStatusChanges: Subscription;
 
-    constructor(private nbDialogRef: NbDialogRef<any>) {
+    constructor(
+        private nbDialogRef: NbDialogRef<any>,
+        private presentationService: PresentationService
+    ) {
         this.titleForm = new FormGroup({
             title: new FormControl('', [Validators.required, FormValidators.noEmpty])
         });
@@ -41,6 +45,7 @@ export class EditTitleDialogComponent implements OnInit, OnDestroy {
         }
 
         this.presentation.title = this.titleForm.controls['title'].value.trim();
+        this.presentationService.updateStorage(this.presentation);
         this.closeDialog();
     }
 
