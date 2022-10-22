@@ -1,0 +1,8 @@
+<button [style.position]="'absolute'" class="delete-slide-button" (click)="deleteSlide($event)">
+    <nb-icon icon="trash-outline"></nb-icon>
+</button>
+<span class="miniature-slide-number">{{ index + 1 }}</span>
+{{ slide.name | maxLength: 40 }}
+<div style="position: absolute; top: 0; right: 0; padding: 0.2rem 0.2rem 0 0; cursor: move;">
+    <nb-icon style="width: 1.4rem; height: 1.4rem" icon="move"></nb-icon>
+</div>

@@ -1,0 +1,11 @@
+<button id="new-slide-button" class="new-slide-button" (click)="newSlide()">
+    <nb-icon style="height: 3rem; width: 3rem; color: currentColor" icon="plus-outline"></nb-icon>
+    Nueva
+</button>
+<app-miniature-slide *ngFor="let slide of presentation?.slides; let i=index"
+    (selectMiniature)="selectMiniatureSlide($event)"
+    (deleteMiniature)="deleteMiniatureSlide($event)"
+    [slide]="slide"
+    [index]="i"
+>
+</app-miniature-slide>

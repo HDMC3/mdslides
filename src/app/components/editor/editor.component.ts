@@ -21,16 +21,14 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('divider') divider?: ElementRef;
     @ViewChild('mdEditor') mdEditor?: ElementRef;
     @ViewChild('currentSlide', { read: ElementRef }) currentSlide?: ElementRef;
-    @ViewChild('miniatureSlides') miniatureSlides?: ElementRef<HTMLElement>;
     themeButtonIcon: string;
     presentation?: Presentation;
     isClickDivider: boolean;
     isMdEditorActive: boolean;
     resizeObserver: ResizeObserver;
-    selectedSlide?: Slide;
-    selectedSlideElement?: HTMLElement;
     currentSlideHtml?: string;
     currentSlideCss?: string;
+    selectedSlide?: Slide;
     editorValueSubscription?: Subscription;
 
     constructor(
@@ -59,18 +57,12 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnInit(): void {
         this.activatedRoute.params.pipe(take(1)).subscribe(params => {
             this.presentation = this.presentationService.initPresentation(params['id']);
-            this.selectedSlide = this.presentation?.slides[0];
         });
     }
 
     ngAfterViewInit(): void {
         this.presentationService.initial$.pipe(take(1)).subscribe(presentation => {
             this.setEditorValue({ value: presentation.slides[0].code, clearEditor: true });
-            const firstMiniature = document.querySelector<HTMLElement>('div.miniature-slide-card');
-            if (firstMiniature) {
-                firstMiniature?.classList.add('selected-slide');
-                this.selectedSlideElement = firstMiniature;
-            }
         });
 
         this.editorValueSubscription = this.mdEditorService.editorValue.subscribe(editorChangeData => {
@@ -110,6 +102,11 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         this.isClickDivider = false;
     }
 
+    onChangeMiniatureSlide(selectedSlide: Slide) {
+        this.selectedSlide = selectedSlide;
+        this.setEditorValue({ value: selectedSlide.code, clearEditor: true });
+    }
+
     switchView() {
         if (!this.mdEditor || !this.currentSlide) return;
 
@@ -133,49 +130,12 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.presentation) this.presentationService.updateStorage(this.presentation);
     }
 
-    newSlide() {
-        const newSlide = this.presentationService.createSlide();
-        this.presentation?.slides.push(newSlide);
-        this.setEditorValue({ value: newSlide.code, clearEditor: true });
-    }
-
-    selectMiniatureSlide(slide: Slide, slideElement: HTMLElement) {
-        this.selectedSlide = slide;
-        this.changeSelectedElement(slideElement);
-        this.setEditorValue({ value: slide.code, clearEditor: true });
-    }
 
     setEditorValue(newEditorData: EditorChangeData) {
         this.mdEditorService.changeEditorValue(newEditorData);
         const { html, css } = this.marpitService.render(newEditorData.value);
         this.currentSlideHtml = html;
         this.currentSlideCss = css;
-    }
-
-    deleteSlide(e: MouseEvent, indexSlide: number) {
-        e.stopPropagation();
-
-        if (!this.presentation || !this.miniatureSlides || !this.selectedSlideElement) return;
-
-        const slideElements = this.miniatureSlides.nativeElement.querySelectorAll<HTMLElement>('.miniature-slide-card');
-
-        const newSelectedSlideElement = indexSlide === slideElements.length - 1
-            ? slideElements[slideElements.length - 2]
-            : slideElements[indexSlide + 1];
-
-        const newSelectedSlide = indexSlide === slideElements.length - 1
-            ? this.presentation.slides[indexSlide - 1]
-            : this.presentation.slides[indexSlide + 1];
-
-        this.selectMiniatureSlide(newSelectedSlide, newSelectedSlideElement);
-        this.presentation.slides.splice(indexSlide, 1);
-        this.presentationService.updateStorage(this.presentation);
-    }
-
-    changeSelectedElement(newSelectedElement: HTMLElement) {
-        this.selectedSlideElement?.classList.remove('selected-slide');
-        newSelectedElement.classList.add('selected-slide');
-        this.selectedSlideElement = newSelectedElement;
     }
 
     changeTheme() {

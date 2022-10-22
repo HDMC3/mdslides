@@ -12,6 +12,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MdEditorComponent } from './components/md-editor/md-editor.component';
 import { MaxLengthPipe } from './shared/pipes/max-length.pipe';
 import { CurrentSlideComponent } from './components/current-slide/current-slide.component';
+import { MiniatureSlideComponent } from './components/miniature-slide/miniature-slide.component';
+import { MiniaturesComponent } from './components/miniatures/miniatures.component';
 
 @NgModule({
     declarations: [
@@ -20,7 +22,9 @@ import { CurrentSlideComponent } from './components/current-slide/current-slide.
         EditTitleDialogComponent,
         MdEditorComponent,
         MaxLengthPipe,
-        CurrentSlideComponent
+        CurrentSlideComponent,
+        MiniatureSlideComponent,
+        MiniaturesComponent
     ],
     imports: [
         BrowserModule,

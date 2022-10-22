@@ -43,19 +43,8 @@
                     <nb-icon icon="swap"></nb-icon>
                 </button>
             </section>
-            <section #miniatureSlides class="miniatures-section">
-                <button id="new-slide-button" class="new-slide-button" (click)="newSlide()">
-                    <nb-icon style="height: 3rem; width: 3rem; color: currentColor" icon="plus-outline"></nb-icon>
-                    Nueva
-                </button>
-                <div #slideElement *ngFor="let slide of presentation?.slides; let i=index" class="miniature-slide-card" (click)="selectMiniatureSlide(slide, slideElement)">
-                    <button [style.position]="'absolute'" class="delete-slide-button" (click)="deleteSlide($event, i)">
-                        <nb-icon icon="trash-outline"></nb-icon>
-                    </button>
-                    <span class="miniature-slide-number">{{ i + 1 }}</span>
-                    {{ slide.name | maxLength: 40 }}
-                </div>
-            </section>
+            <app-miniatures [presentation]="presentation" (changeSlide)="onChangeMiniatureSlide($event)" class="miniatures-section">
+            </app-miniatures>
         </main>
     </nb-layout-column>
 
