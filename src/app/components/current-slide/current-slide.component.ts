@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, SimpleChanges, ElementRef, HostBinding } from '@angular/core';
+import { Component, ElementRef, HostBinding } from '@angular/core';
+import { MarpitService } from 'src/app/core/services/marpit.service';
 import { MdEditorService } from 'src/app/core/services/md-editor.service';
 
 @Component({
@@ -6,17 +7,23 @@ import { MdEditorService } from 'src/app/core/services/md-editor.service';
     templateUrl: './current-slide.component.html',
     styleUrls: ['./current-slide.component.css']
 })
-export class CurrentSlideComponent implements OnChanges {
+export class CurrentSlideComponent {
 
-    @Input() html?: string;
-    @Input() css?: string;
-    @Input() comments?: string;
     @HostBinding('style') componentStyle = window.innerWidth <= 500 ? '--zoom: 0.3' : '--zoom: 0.4';
+    editorValueStr: string;
 
-    constructor(private mdEditorService: MdEditorService, private componentRef: ElementRef) { }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        this.renderSlide();
+    constructor(
+        private mdEditorService: MdEditorService,
+        private marpitService: MarpitService,
+        private componentRef: ElementRef
+    ) {
+        this.editorValueStr = '';
+        this.mdEditorService.editorValue.subscribe(editorChangeData => {
+            const newEditorValueStr = editorChangeData.value.join('');
+            if (this.editorValueStr === newEditorValueStr) return;
+            this.renderSlide(editorChangeData.value);
+            this.editorValueStr = newEditorValueStr;
+        });
     }
 
     zoomSlide(action: 'max' | 'min') {
@@ -30,13 +37,15 @@ export class CurrentSlideComponent implements OnChanges {
         this.componentRef?.nativeElement.style.setProperty('--zoom', `${newZoom}`);
     }
 
-    renderSlide() {
-        if (!this.html || !this.css) return;
+    renderSlide(editorValue: string[]) {
         const currentSlideContainer = this.componentRef.nativeElement.querySelector('.current-slide-container');
         if (!currentSlideContainer) return;
+
         let shadowRoot = currentSlideContainer.shadowRoot;
         if (!shadowRoot) shadowRoot = currentSlideContainer.attachShadow({ mode: 'open' });
-        shadowRoot.innerHTML = `<style>${this.css}\n.marpit{position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(var(--zoom)); box-shadow: var(--shadow);}</style>\n${this.html}`;
+
+        const { html, css } = this.marpitService.render(editorValue);
+        shadowRoot.innerHTML = `<style>${css}\n.marpit{position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(var(--zoom)); box-shadow: var(--shadow);}</style>\n${html}`;
         shadowRoot.querySelectorAll('section').forEach((el: any) => {
             if (el.id !== '1') el.remove();
         });

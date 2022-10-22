@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { NbDialogService, NbSidebarService } from '@nebular/theme';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { MarpitService } from 'src/app/core/services/marpit.service';
 import { MdEditorService } from 'src/app/core/services/md-editor.service';
 import { PresentationService } from 'src/app/core/services/presentation.service';
 import { EditorChangeData } from 'src/app/core/types/editor-change-data';
@@ -37,7 +36,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private nbDialogService: NbDialogService,
         private presentationService: PresentationService,
-        private marpitService: MarpitService,
         private mdEditorService: MdEditorService
     ) {
         this.themeButtonIcon = this.themeService.currentTheme === 'default' ? 'moon-outline' : 'sun-outline';
@@ -123,9 +121,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     onMdEditorChangeValue(editorValue: string[]) {
-        const { html, css } = this.marpitService.render(editorValue);
-        this.currentSlideHtml = html;
-        this.currentSlideCss = css;
         if (this.selectedSlide) this.selectedSlide.code = editorValue;
         if (this.presentation) this.presentationService.updateStorage(this.presentation);
     }
@@ -133,9 +128,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     setEditorValue(newEditorData: EditorChangeData) {
         this.mdEditorService.changeEditorValue(newEditorData);
-        const { html, css } = this.marpitService.render(newEditorData.value);
-        this.currentSlideHtml = html;
-        this.currentSlideCss = css;
     }
 
     changeTheme() {
