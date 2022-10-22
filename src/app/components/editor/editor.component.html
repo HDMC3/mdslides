@@ -28,7 +28,6 @@
     </nb-sidebar>
 
     <nb-layout-column>
-
         <main>
             <section class="editor-section">
                 <div #mdEditor class="md-editor hidde-panel">
@@ -43,7 +42,7 @@
                     <nb-icon icon="swap"></nb-icon>
                 </button>
             </section>
-            <app-miniatures [presentation]="presentation" (changeSlide)="onChangeMiniatureSlide($event)" class="miniatures-section">
+            <app-miniatures [presentation]="presentation" (changeSlide)="onChangeMiniatureSlide($event)">
             </app-miniatures>
         </main>
     </nb-layout-column>

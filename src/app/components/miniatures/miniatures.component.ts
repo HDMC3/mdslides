@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter, ViewChildren, QueryList, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Subscription } from 'rxjs';
 import { PresentationService } from 'src/app/core/services/presentation.service';
 import { Presentation } from 'src/app/data/interfaces/presentation';
@@ -34,7 +35,7 @@ export class MiniaturesComponent implements AfterViewInit, OnDestroy {
                 if (this.newSlideCreated && queryList.length > 0) {
                     const newMiniature = queryList.last;
                     this.changeSelectedElement(newMiniature);
-                    this.elementRef.nativeElement.scrollTo({
+                    this.elementRef.nativeElement.querySelector('.miniatures-section')?.scrollTo({
                         left: this.elementRef.nativeElement.scrollWidth,
                         behavior: 'smooth'
                     });
@@ -81,5 +82,12 @@ export class MiniaturesComponent implements AfterViewInit, OnDestroy {
         this.selectedMiniature?.elementRef.nativeElement.classList.remove('selected-slide');
         newSelectedElement.elementRef.nativeElement.classList.add('selected-slide');
         this.selectedMiniature = newSelectedElement;
+    }
+
+    miniatureSlideDrop(event: CdkDragDrop<Slide[]>) {
+        if (this.presentation) {
+            moveItemInArray(this.presentation.slides, event.previousIndex, event.currentIndex);
+            this.presentationService.updateStorage(this.presentation);
+        }
     }
 }

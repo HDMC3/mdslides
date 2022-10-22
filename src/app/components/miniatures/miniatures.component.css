@@ -1,4 +1,4 @@
-:host {
+.miniatures-section {
     display: flex;
     height: 10rem;
     max-height: 10rem;
@@ -29,7 +29,7 @@
     left: 0rem;
     flex-shrink: 0;
     flex-direction: column;
-    width: 7rem;
+    width: 5rem;
     height: 6rem;
     color: var(--text-basic-color);
     background-color: var(--background-basic-color-3);
@@ -38,6 +38,32 @@
 #new-slide-button.new-slide-button:hover {
     background-color: var(--background-basic-color-4);
 }
+
 #new-slide-button.new-slide-button:active {
     background-color: var(--background-basic-color-2);
+}
+
+.cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+}
+
+.cdk-drag-placeholder {
+    opacity: 0.25;
+}
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.miniatures-section.cdk-drop-list-dragging app-miniature-slide:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+@media screen and (min-width: 500px) {
+    #new-slide-button.new-slide-button {
+        width: 7rem;
+        height: 6rem;
+    }
 }

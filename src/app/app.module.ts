@@ -14,6 +14,7 @@ import { MaxLengthPipe } from './shared/pipes/max-length.pipe';
 import { CurrentSlideComponent } from './components/current-slide/current-slide.component';
 import { MiniatureSlideComponent } from './components/miniature-slide/miniature-slide.component';
 import { MiniaturesComponent } from './components/miniatures/miniatures.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
     declarations: [
@@ -40,7 +41,8 @@ import { MiniaturesComponent } from './components/miniatures/miniatures.componen
         NbCardModule,
         NbDialogModule.forRoot(),
         NbSidebarModule.forRoot(),
-        NbEvaIconsModule
+        NbEvaIconsModule,
+        DragDropModule
     ],
     providers: [],
     bootstrap: [AppComponent]

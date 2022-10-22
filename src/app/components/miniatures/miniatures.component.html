@@ -1,11 +1,18 @@
-<button id="new-slide-button" class="new-slide-button" (click)="newSlide()">
-    <nb-icon style="height: 3rem; width: 3rem; color: currentColor" icon="plus-outline"></nb-icon>
-    Nueva
-</button>
-<app-miniature-slide *ngFor="let slide of presentation?.slides; let i=index"
-    (selectMiniature)="selectMiniatureSlide($event)"
-    (deleteMiniature)="deleteMiniatureSlide($event)"
-    [slide]="slide"
-    [index]="i"
->
-</app-miniature-slide>
+<div class="miniatures-section" cdkDropList cdkDropListOrientation="horizontal" 
+    (cdkDropListDropped)="miniatureSlideDrop($event)"
+    >
+    <button id="new-slide-button" class="new-slide-button" (click)="newSlide()">
+        <nb-icon style="height: 3rem; width: 3rem; color: currentColor" icon="plus-outline"></nb-icon>
+        Nueva
+    </button>
+    <app-miniature-slide *ngFor="let slide of presentation?.slides; let i=index" cdkDrag
+        (selectMiniature)="selectMiniatureSlide($event)"
+        (deleteMiniature)="deleteMiniatureSlide($event)"
+        [slide]="slide"
+        [index]="i"
+    >
+        <div style="position: absolute; top: 0; right: 0; padding: 0.2rem 0.2rem 0 0; cursor: move;" cdkDragHandle>
+            <nb-icon style="width: 1.4rem; height: 1.4rem" icon="move"></nb-icon>
+        </div>
+    </app-miniature-slide>
+</div>
