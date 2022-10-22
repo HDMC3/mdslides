@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChildren, QueryList, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
+import { Component, Input, ViewChildren, QueryList, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Subscription } from 'rxjs';
 import { PresentationService } from 'src/app/core/services/presentation.service';
@@ -14,7 +14,6 @@ import { MiniatureSlideComponent } from '../miniature-slide/miniature-slide.comp
 export class MiniaturesComponent implements AfterViewInit, OnDestroy {
 
     @Input() presentation?: Presentation;
-    @Output() changeSlide: EventEmitter<Slide>;
     @ViewChildren(MiniatureSlideComponent) miniatures?: QueryList<MiniatureSlideComponent>;
     selectedMiniature?: MiniatureSlideComponent;
     miniaturesChangesSubscription?: Subscription;
@@ -24,7 +23,6 @@ export class MiniaturesComponent implements AfterViewInit, OnDestroy {
         private presentationService: PresentationService,
         private elementRef: ElementRef<HTMLElement>
     ) {
-        this.changeSlide = new EventEmitter();
         this.newSlideCreated = false;
     }
 
@@ -56,12 +54,12 @@ export class MiniaturesComponent implements AfterViewInit, OnDestroy {
         const newSlide = this.presentationService.createSlide();
         this.presentation?.slides.push(newSlide);
         this.newSlideCreated = true;
-        this.changeSlide.emit(newSlide);
+        this.presentationService.changeCurrentSlide(newSlide);
     }
 
     selectMiniatureSlide(slideElement: MiniatureSlideComponent) {
         this.changeSelectedElement(slideElement);
-        this.changeSlide.emit(slideElement.slide);
+        this.presentationService.changeCurrentSlide(slideElement.slide);
     }
 
     deleteMiniatureSlide(index: number) {

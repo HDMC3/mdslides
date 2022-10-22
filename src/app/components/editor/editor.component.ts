@@ -29,6 +29,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     currentSlideCss?: string;
     selectedSlide?: Slide;
     editorValueSubscription?: Subscription;
+    currentSlideSubscription?: Subscription;
 
     constructor(
         private themeService: ThemeService,
@@ -59,13 +60,19 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit(): void {
-        this.presentationService.initial$.pipe(take(1)).subscribe(presentation => {
+        this.presentationService.presentation$.pipe(take(1)).subscribe(presentation => {
             this.setEditorValue({ value: presentation.slides[0].code, clearEditor: true });
+            this.presentationService.changeCurrentSlide(presentation.slides[0]);
         });
 
         this.editorValueSubscription = this.mdEditorService.editorValue.subscribe(editorChangeData => {
             this.onMdEditorChangeValue(editorChangeData.value);
         });
+
+        this.currentSlideSubscription = this.presentationService.currentSlide$.subscribe(slide => {
+            this.onChangeMiniatureSlide(slide);
+        });
+
         this.resizeObserver.observe(document.body);
         this.setEditorContainerHeight();
     }
@@ -73,6 +80,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnDestroy(): void {
         this.resizeObserver.disconnect();
         this.editorValueSubscription?.unsubscribe();
+        this.currentSlideSubscription?.unsubscribe();
     }
 
     @HostListener('pointermove', ['$event'])
