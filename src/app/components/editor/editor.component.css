@@ -71,11 +71,6 @@ main {
 .editor-section-divider::after {
     content: "";
     position: absolute;
-    width: 30px;
-    height: 100%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     background-color: var(--color-basic-600);
     background-image: linear-gradient(to top, transparent 0 25%, white 25% 35%, transparent 35% 65%, white 65% 75%, transparent 75% 100%);
 }
@@ -126,7 +121,9 @@ nb-layout-column {
     .editor-section-divider {
         width: 8px;
         height: 100%;
-        display: initial;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .editor-section-divider:hover {
