@@ -41,11 +41,9 @@ export class PresentationService {
 
     addNewSlide() {
         const newSlide = getNewSlide();
-        const storagePresentation = this.getPresentationStorage();
-        storagePresentation.slides.push(newSlide);
-        this.updateStorage(storagePresentation);
         this.presentation.slides.push(newSlide);
         this._presentation$.next(this.presentation);
+        this.updateStorage();
         return newSlide;
     }
 
