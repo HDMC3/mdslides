@@ -12,6 +12,7 @@
     height: 100%;
     position: relative;
     overflow: scroll auto;
+    background-color: var(--background-basic-color-1);
 }
 
 .zoom-buttons {
