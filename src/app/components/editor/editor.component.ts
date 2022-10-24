@@ -7,7 +7,6 @@ import { MdEditorService } from 'src/app/core/services/md-editor.service';
 import { PresentationService } from 'src/app/core/services/presentation.service';
 import { EditorChangeData } from 'src/app/core/types/editor-change-data';
 import { Presentation } from 'src/app/data/interfaces/presentation';
-import { Slide } from 'src/app/data/interfaces/slide';
 import { ThemeService } from 'src/app/shared/services/theme.service';
 import { EditTitleDialogComponent } from '../edit-title-dialog/edit-title-dialog.component';
 
@@ -25,11 +24,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     isClickDivider: boolean;
     isMdEditorActive: boolean;
     resizeObserver: ResizeObserver;
-    currentSlideHtml?: string;
-    currentSlideCss?: string;
-    selectedSlide?: Slide;
     editorValueSubscription?: Subscription;
-    currentSlideSubscription?: Subscription;
 
     constructor(
         private themeService: ThemeService,
@@ -62,15 +57,10 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     ngAfterViewInit(): void {
         this.presentationService.presentation$.pipe(take(1)).subscribe(presentation => {
             this.setEditorValue({ value: presentation.slides[0].code, clearEditor: true });
-            this.presentationService.changeCurrentSlide(presentation.slides[0]);
         });
 
         this.editorValueSubscription = this.mdEditorService.editorValue.subscribe(editorChangeData => {
-            this.onMdEditorChangeValue(editorChangeData.value);
-        });
-
-        this.currentSlideSubscription = this.presentationService.currentSlide$.subscribe(slide => {
-            this.onChangeMiniatureSlide(slide);
+            this.presentationService.updateCurrentSlideCode(editorChangeData.value);
         });
 
         this.resizeObserver.observe(document.body);
@@ -80,7 +70,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnDestroy(): void {
         this.resizeObserver.disconnect();
         this.editorValueSubscription?.unsubscribe();
-        this.currentSlideSubscription?.unsubscribe();
     }
 
     @HostListener('pointermove', ['$event'])
@@ -108,11 +97,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         this.isClickDivider = false;
     }
 
-    onChangeMiniatureSlide(selectedSlide: Slide) {
-        this.selectedSlide = selectedSlide;
-        this.setEditorValue({ value: selectedSlide.code, clearEditor: true });
-    }
-
     switchView() {
         if (!this.mdEditor || !this.currentSlide) return;
 
@@ -127,12 +111,6 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         this.currentSlide.nativeElement.classList.remove('hidde-panel');
         this.isMdEditorActive = false;
     }
-
-    onMdEditorChangeValue(editorValue: string[]) {
-        if (this.selectedSlide) this.selectedSlide.code = editorValue;
-        if (this.presentation) this.presentationService.updateStorage(this.presentation);
-    }
-
 
     setEditorValue(newEditorData: EditorChangeData) {
         this.mdEditorService.changeEditorValue(newEditorData);
