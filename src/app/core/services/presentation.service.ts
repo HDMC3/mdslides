@@ -29,6 +29,7 @@ export class PresentationService {
         if (storagePresentationStr) {
             const storagePresentation = JSON.parse(storagePresentationStr);
             this._presentation$.next(storagePresentation);
+            this._currentSlide$.next(storagePresentation.slides[0]);
             this.presentation = storagePresentation;
             return storagePresentation;
         }
@@ -36,6 +37,7 @@ export class PresentationService {
         this.location.replaceState(`/${this.presentation.id}`);
         this.updateStorage(this.presentation);
         this._presentation$.next(this.presentation);
+        this._currentSlide$.next(this.presentation.slides[0]);
         return this.presentation;
     }
 
