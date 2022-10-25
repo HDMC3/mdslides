@@ -5,7 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class MaxLengthPipe implements PipeTransform {
 
-    transform(value: string, maxLength: number = 100): string {
+    transform(value: string | undefined, maxLength: number = 100): string {
+        if (!value) return '';
         if (value.length > maxLength) {
             let newValue = '';
             const words = value.split(/\s/);
