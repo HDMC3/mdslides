@@ -5,40 +5,46 @@ nb-layout-header nav.fixed {
 }
 
 /* Firefox */
-.cm-scroller {
+.cm-scroller, .current-slide-container {
     scrollbar-width: 1rem;
     scrollbar-color: var(--background-basic-color-3) var(--background-basic-color-2);
 }
 /* Chrome, Safari y Edge */
-.cm-scroller::-webkit-scrollbar {
+.cm-scroller::-webkit-scrollbar, .current-slide-container::-webkit-scrollbar {
     width: 1rem;
 }
-.cm-scroller::-webkit-scrollbar-track {
+.cm-scroller::-webkit-scrollbar-track, .current-slide-container::-webkit-scrollbar-track {
     background: transparent;
 }
-.cm-scroller::-webkit-scrollbar-thumb {
+.cm-scroller::-webkit-scrollbar-thumb, .current-slide-container::-webkit-scrollbar-thumb {
     background-color: var(--background-basic-color-3);
     border-right: 0.2rem solid var(--background-basic-color-1);
 }
 
+.current-slide-container::-webkit-scrollbar-corner {
+    background-color: var(--background-basic-color-3);
+    border: 0.15rem solid var(--background-basic-color-1);
+    border-left: 0;
+}
+
 /* Firefox */
-.current-slide-container, .miniatures-section {
+.miniatures-section {
     scrollbar-width: 1rem;
     scrollbar-color: var(--background-basic-color-1) var(--background-basic-color-3);
 }
 /* Chrome, Safari y Edge */
-.current-slide-container::-webkit-scrollbar, .miniatures-section::-webkit-scrollbar {
+.miniatures-section::-webkit-scrollbar {
     width: 1rem;
 }
-.current-slide-container::-webkit-scrollbar-track, .miniatures-section::-webkit-scrollbar-track {
+.miniatures-section::-webkit-scrollbar-track {
     background: transparent;
 }
-.current-slide-container::-webkit-scrollbar-thumb, .miniatures-section::-webkit-scrollbar-thumb {
+.miniatures-section::-webkit-scrollbar-thumb {
     background-color: var(--background-basic-color-1);
     border: 0.15rem solid var(--background-basic-color-3);
 }
 
-.current-slide-container::-webkit-scrollbar-corner, .miniatures-section::-webkit-scrollbar-corner {
+.miniatures-section::-webkit-scrollbar-corner {
     background-color: var(--background-basic-color-1);
     border: 0.15rem solid var(--background-basic-color-3);
     border-left: 0;

@@ -1,25 +1,26 @@
 <div class="current-slide-container"></div>
 
-<div style="position: absolute; top: 0; left: 0; padding: 0.5rem;">
-    <div *ngIf="!editingSlideName" style="display: flex; align-items: center; gap: 0.2rem;">
+<div class="top-options-container">
+    <div *ngIf="!editingSlideName" class="slide-name-container">
         <button nbButton ghost shape="round" (click)="editSlideName()">
             <nb-icon icon="edit-outline"></nb-icon>
         </button>
-        <h6 style="margin: 0;">{{ currentSlide?.name }}</h6>
+        <h6 style="margin: 0;">{{ currentSlide?.name | maxLength: 30 }}</h6>
     </div>
-    <div *ngIf="editingSlideName" style="display: flex; align-items: center; gap: 0.2rem;">
+    <div *ngIf="editingSlideName" class="slide-name-container">
         <button nbButton ghost shape="round" (click)="saveSlideName()">
             <nb-icon icon="save-outline"></nb-icon>
         </button>
-        <div style="display: flex; flex-direction: column;">
+        <div class="slide-name-control">
             <input nbInput type="text" fieldSize="small" autocomplete="off"
                 [status]="slideNameFormControl.invalid ? 'danger' : 'basic'" 
-                [formControl]="slideNameFormControl" 
+                [formControl]="slideNameFormControl"
                 (keyup.enter)="saveSlideName()">
             <small *ngIf="slideNameFormControl.invalid" style="color: var(--color-danger-500)">No pueder se vacio</small>
         </div>
     </div>
 </div>
+
 
 <div class="zoom-buttons">
     <button nbButton size="medium" outline (click)="zoomSlide('min')">

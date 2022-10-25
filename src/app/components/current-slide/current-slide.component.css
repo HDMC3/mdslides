@@ -4,6 +4,7 @@
     height: 100%;
     border: none;
     position: relative;
+    overflow: hidden;
     animation: switchPanel 0.15s ease-in-out;
 }
 
@@ -21,6 +22,30 @@
     left: 1.5rem;
     display: flex;
     gap: 0.5rem
+}
+
+.top-options-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0.5rem 0.7rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem;
+    justify-content: space-between;
+    width: 100%;
+    background-color: var(--background-basic-color-1);
+}
+
+.slide-name-container {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.slide-name-control {
+    display: flex;
+    flex-direction: column;
 }
 
 
