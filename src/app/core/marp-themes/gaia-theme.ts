@@ -1,4 +1,14 @@
-export const marpGaiaTheme = /* css */`
+import { MarpThemeData } from '../types/marp-theme-data';
+
+const marpGaiaThemeColors = [
+    '#fff8e1',
+    'rgba(69, 90, 100, 0.1)',
+    '#455a64',
+    '#6a7a7d',
+    '#0288d1'
+];
+
+const marpGaiaTheme = /* css */`
 @charset "UTF-8";
 /*!
  * Marp / Marpit Gaia theme.
@@ -394,3 +404,9 @@ section:where(.lead) table {
 /*# sourceMappingURL=gaia.css.map */
 
 `;
+
+export const MARP_GAIA_THEME: MarpThemeData = {
+    name: 'Gaia',
+    theme: marpGaiaTheme,
+    colors: marpGaiaThemeColors
+};

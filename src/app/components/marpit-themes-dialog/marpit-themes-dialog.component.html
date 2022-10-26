@@ -1,0 +1,14 @@
+<nb-card>
+    <nb-card-header>Temas para presentacion</nb-card-header>
+    <nb-card-body>
+        <div *ngFor="let theme of themes" class="theme-container" [ngClass]="{'theme-selected': currentTheme?.name === theme.name}">
+            <div class="theme-colors-box" 
+                (click)="changeMarpTheme(theme)"
+                [style.background]="getCSSGradient(theme.colors)">
+            </div>
+            <span>
+                {{theme.name}}
+            </span>
+        </div>
+    </nb-card-body>
+</nb-card>

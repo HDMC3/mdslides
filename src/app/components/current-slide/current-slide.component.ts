@@ -1,10 +1,13 @@
 import { Component, ElementRef, HostBinding, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { NbDialogService } from '@nebular/theme';
 import { MarpitService } from 'src/app/core/services/marpit.service';
 import { MdEditorService } from 'src/app/core/services/md-editor.service';
 import { PresentationService } from 'src/app/core/services/presentation.service';
+import { MarpThemeData } from 'src/app/core/types/marp-theme-data';
 import { Slide } from 'src/app/data/interfaces/slide';
 import { FormValidators } from 'src/app/shared/form-validators';
+import { MarpitThemesDialogComponent } from '../marpit-themes-dialog/marpit-themes-dialog.component';
 
 @Component({
     selector: 'app-current-slide',
@@ -14,17 +17,21 @@ import { FormValidators } from 'src/app/shared/form-validators';
 export class CurrentSlideComponent implements OnInit {
 
     @HostBinding('style') componentStyle = window.innerWidth <= 500 ? '--zoom: 0.3' : '--zoom: 0.4';
+    editorValue: string[];
     editorValueStr: string;
     editingSlideName: boolean;
     slideNameFormControl: FormControl;
     currentSlide?: Slide;
+    currentTheme?: MarpThemeData;
 
     constructor(
         private mdEditorService: MdEditorService,
         private marpitService: MarpitService,
         private presentationService: PresentationService,
-        private componentRef: ElementRef
+        private componentRef: ElementRef,
+        private nbDialogService: NbDialogService
     ) {
+        this.editorValue = [];
         this.editorValueStr = '';
         this.editingSlideName = false;
         this.mdEditorService.editorValue.subscribe(editorChangeData => {
@@ -32,6 +39,7 @@ export class CurrentSlideComponent implements OnInit {
             if (this.editorValueStr === newEditorValueStr) return;
             this.renderSlide(editorChangeData.value);
             this.editorValueStr = newEditorValueStr;
+            this.editorValue = editorChangeData.value;
         });
         this.slideNameFormControl = new FormControl('', [Validators.required, FormValidators.noEmpty]);
     }
@@ -41,6 +49,12 @@ export class CurrentSlideComponent implements OnInit {
             this.editingSlideName = false;
             this.slideNameFormControl.setValue(slide.name);
             this.currentSlide = slide;
+            this.renderSlide(this.editorValue);
+        });
+
+        this.marpitService.currentTheme$.subscribe(theme => {
+            this.renderSlide(this.editorValue);
+            this.currentTheme = theme;
         });
     }
 
@@ -78,6 +92,14 @@ export class CurrentSlideComponent implements OnInit {
         this.currentSlide.name = this.slideNameFormControl.value;
         this.presentationService.updateStorage();
         this.editingSlideName = false;
+    }
+
+    openMarpitThemesDialog() {
+        this.nbDialogService.open(MarpitThemesDialogComponent, {
+            context: {
+                currentTheme: this.currentTheme
+            }
+        });
     }
 
 }

@@ -15,6 +15,7 @@ import { CurrentSlideComponent } from './components/current-slide/current-slide.
 import { MiniatureSlideComponent } from './components/miniature-slide/miniature-slide.component';
 import { MiniaturesComponent } from './components/miniatures/miniatures.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MarpitThemesDialogComponent } from './components/marpit-themes-dialog/marpit-themes-dialog.component';
 
 @NgModule({
     declarations: [
@@ -25,7 +26,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
         MaxLengthPipe,
         CurrentSlideComponent,
         MiniatureSlideComponent,
-        MiniaturesComponent
+        MiniaturesComponent,
+        MarpitThemesDialogComponent
     ],
     imports: [
         BrowserModule,
