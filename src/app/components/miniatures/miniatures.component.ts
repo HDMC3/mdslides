@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, QueryList, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, AfterViewInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Subscription } from 'rxjs';
 import { PresentationService } from 'src/app/core/services/presentation.service';
@@ -16,6 +16,7 @@ export class MiniaturesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     presentation?: Presentation;
     @ViewChildren(MiniatureSlideComponent) miniatures?: QueryList<MiniatureSlideComponent>;
+    @ViewChild('miniaturesContainer') miniaturesContainer?: ElementRef<HTMLElement>;
     selectedMiniature?: MiniatureSlideComponent;
     miniaturesChangesSubscription?: Subscription;
     presentationSubscription?: Subscription;
@@ -41,8 +42,10 @@ export class MiniaturesComponent implements OnInit, AfterViewInit, OnDestroy {
                 if (this.newSlideCreated && queryList.length > 0) {
                     const newMiniature = queryList.last;
                     this.changeSelectedElement(newMiniature);
-                    newMiniature.elementRef.nativeElement.scrollIntoView({ block: 'end', behavior: 'smooth' });
-                    this.newSlideCreated = false;
+                    if (this.miniaturesContainer) {
+                        this.miniaturesContainer.nativeElement.scroll({ left: Number.MAX_SAFE_INTEGER, behavior: 'smooth' });
+                        this.newSlideCreated = false;
+                    }
                 }
             });
 
