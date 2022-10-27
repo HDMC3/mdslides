@@ -13,15 +13,15 @@ import { getNewSlide } from '../default-models/new-slide';
 })
 export class PresentationService {
     private _presentation$: BehaviorSubject<Presentation>;
-    private _currentSlide$: BehaviorSubject<Slide>;
+    private _currentSlide$: BehaviorSubject<Slide | undefined>;
     private presentation: Presentation;
-    private currentSlide: Slide;
+    private currentSlide: Slide | undefined;
 
     constructor(private location: Location) {
         this.presentation = getInitialPresentation(v4());
         this._presentation$ = new BehaviorSubject<Presentation>(this.presentation);
         this.currentSlide = this.presentation.slides[0];
-        this._currentSlide$ = new BehaviorSubject<Slide>(this.currentSlide);
+        this._currentSlide$ = new BehaviorSubject<Slide | undefined>(this.currentSlide);
     }
 
     initPresentation(id: string) {
@@ -72,13 +72,15 @@ export class PresentationService {
         localStorage.setItem(this.presentation.id, presentationStr);
     }
 
-    changeCurrentSlide(slide: Slide) {
+    changeCurrentSlide(slide: Slide | undefined) {
         this.currentSlide = slide;
         this._currentSlide$.next(slide);
     }
 
     updateCurrentSlideCode(editorValue: string[]) {
-        this.currentSlide.code = editorValue;
+        if (this.currentSlide) {
+            this.currentSlide.code = editorValue;
+        }
         this.updateStorage(this.presentation);
     }
 

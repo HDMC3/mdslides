@@ -1,6 +1,6 @@
 <div class="current-slide-container"></div>
 
-<div class="top-options-container">
+<div *ngIf="currentSlide" class="top-options-container">
     <div *ngIf="!editingSlideName" class="slide-name-container">
         <button nbButton ghost shape="round" (click)="editSlideName()">
             <nb-icon icon="edit-outline"></nb-icon>
@@ -25,7 +25,7 @@
 </div>
 
 
-<div class="zoom-buttons">
+<div *ngIf="currentSlide" class="zoom-buttons">
     <button nbButton size="medium" outline (click)="zoomSlide('min')">
         <nb-icon icon="minimize-outline"></nb-icon>
     </button>

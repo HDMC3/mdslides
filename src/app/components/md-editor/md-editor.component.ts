@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Output, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Output, EventEmitter, OnDestroy, AfterViewInit, HostBinding } from '@angular/core';
 import { markdown } from '@codemirror/lang-markdown';
 import { basicSetup } from 'codemirror';
 import { ChangeSpec, EditorState } from '@codemirror/state';
@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 })
 export class MdEditorComponent implements OnInit, AfterViewInit, OnDestroy {
     @Output() valueChange: EventEmitter<string[]>;
+    @HostBinding('style.display') displayComponent?: string;
     editorValueSubscription?: Subscription;
     editorInitialized: boolean;
     editorState?: EditorState;
@@ -66,6 +67,10 @@ export class MdEditorComponent implements OnInit, AfterViewInit, OnDestroy {
             });
 
             this.editorView?.dispatch({ changes });
+        });
+
+        this.mdEditorService.editorVisibility.subscribe(hidde => {
+            Promise.resolve().then(() => { this.displayComponent = hidde ? 'inline' : 'none'; });
         });
 
         setTimeout(() => {

@@ -56,6 +56,10 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngAfterViewInit(): void {
         this.presentationService.presentation$.pipe(take(1)).subscribe(presentation => {
+            if (presentation.slides.length === 0) {
+                this.mdEditorService.hiddeEditor();
+                return;
+            }
             this.setEditorValue({ value: presentation.slides[0].code, clearEditor: true });
         });
 

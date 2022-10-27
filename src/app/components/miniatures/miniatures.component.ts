@@ -66,9 +66,11 @@ export class MiniaturesComponent implements OnInit, AfterViewInit, OnDestroy {
         const newSlideDialog = this.nbDialogService.open(NewSlideDialogComponent)
             .onClose.subscribe(res => {
                 if (res?.name) {
+                    if (this.miniatures && this.miniatures.length === 0) this.mdEditorService.showEditor();
                     const newSlide = this.presentationService.addNewSlide(res.name);
                     this.newSlideCreated = true;
                     this.presentationService.changeCurrentSlide(newSlide);
+                    this.mdEditorService.changeEditorValue({ value: newSlide.code, clearEditor: true });
                 }
                 newSlideDialog.unsubscribe();
             });
@@ -82,6 +84,14 @@ export class MiniaturesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     deleteMiniatureSlide(index: number) {
         if (!this.presentation || !this.miniatures || !this.selectedMiniature) return;
+
+        if (this.miniatures.length === 1) {
+            this.presentationService.deleteSlide(index);
+            this.mdEditorService.changeEditorValue({ value: [], clearEditor: true });
+            this.mdEditorService.hiddeEditor();
+            this.presentationService.changeCurrentSlide(undefined);
+            return;
+        }
 
         const newSelectedSlideElement = index === this.miniatures.length - 1
             ? this.miniatures.get(index - 1)

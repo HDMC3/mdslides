@@ -16,7 +16,7 @@ import { MarpitThemesDialogComponent } from '../marpit-themes-dialog/marpit-them
 })
 export class CurrentSlideComponent implements OnInit {
 
-    @HostBinding('style') componentStyle = window.innerWidth <= 500 ? '--zoom: 0.3' : '--zoom: 0.4';
+    @HostBinding('style.--zoom') componentStyle = window.innerWidth <= 500 ? '0.3' : '0.4';
     editorValue: string[];
     editorValueStr: string;
     editingSlideName: boolean;
@@ -46,10 +46,11 @@ export class CurrentSlideComponent implements OnInit {
 
     ngOnInit(): void {
         this.presentationService.currentSlide$.subscribe(slide => {
+            this.currentSlide = slide;
+            if (!slide) return;
             this.editingSlideName = false;
             this.slideNameFormControl.setValue(slide.name);
-            this.currentSlide = slide;
-            this.renderSlide(this.editorValue);
+            this.renderSlide(slide.code);
         });
 
         this.marpitService.currentTheme$.subscribe(theme => {
