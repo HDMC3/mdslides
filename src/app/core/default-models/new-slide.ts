@@ -10,20 +10,11 @@ export const getNewSlide = (nameSlide?: string): Slide => {
             'style: |',
             '   section {',
             '       display: grid;',
-            '       grid-template-columns: 1fr;',
-            '       grid-template-rows: auto 1fr;',
-            '       justify-items: center;',
-            '   }',
-            '   p {',
-            '       justify-self: start',
+            '       place-content: center;',
             '   }',
             '---',
             '',
-            '[comment]: # ( Encabezado )',
-            '# Titulo de diapositiva',
-            '',
-            '[comment]: # ( Cuerpo )',
-            'Texto para el cuerpo de la diapositiva'
+            '# Nueva diapositiva'
         ]
     };
 };
