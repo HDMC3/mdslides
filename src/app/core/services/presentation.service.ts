@@ -31,6 +31,7 @@ export class PresentationService {
             this._presentation$.next(storagePresentation);
             this._currentSlide$.next(storagePresentation.slides[0]);
             this.presentation = storagePresentation;
+            this.currentSlide = storagePresentation.slides[0];
             return storagePresentation;
         }
 
