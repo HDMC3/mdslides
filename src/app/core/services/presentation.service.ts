@@ -41,8 +41,8 @@ export class PresentationService {
         return this.presentation;
     }
 
-    addNewSlide() {
-        const newSlide = getNewSlide();
+    addNewSlide(name?: string) {
+        const newSlide = getNewSlide(name);
         this.presentation.slides.push(newSlide);
         this._presentation$.next(this.presentation);
         this.updateStorage();

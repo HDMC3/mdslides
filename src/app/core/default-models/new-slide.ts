@@ -1,10 +1,10 @@
 import { Slide } from 'src/app/data/interfaces/slide';
 import { v4 } from 'uuid';
 
-export const getNewSlide = (): Slide => {
+export const getNewSlide = (nameSlide?: string): Slide => {
     return {
         id: v4(),
-        name: 'Nueva diapositiva',
+        name: nameSlide || 'Nueva diapositiva',
         code: [
             '---',
             'style: |',

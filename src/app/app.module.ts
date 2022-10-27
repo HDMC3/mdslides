@@ -16,6 +16,7 @@ import { MiniatureSlideComponent } from './components/miniature-slide/miniature-
 import { MiniaturesComponent } from './components/miniatures/miniatures.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MarpitThemesDialogComponent } from './components/marpit-themes-dialog/marpit-themes-dialog.component';
+import { NewSlideDialogComponent } from './components/new-slide-dialog/new-slide-dialog.component';
 
 @NgModule({
     declarations: [
@@ -27,7 +28,8 @@ import { MarpitThemesDialogComponent } from './components/marpit-themes-dialog/m
         CurrentSlideComponent,
         MiniatureSlideComponent,
         MiniaturesComponent,
-        MarpitThemesDialogComponent
+        MarpitThemesDialogComponent,
+        NewSlideDialogComponent
     ],
     imports: [
         BrowserModule,

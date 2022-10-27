@@ -6,6 +6,8 @@ import { Presentation } from 'src/app/data/interfaces/presentation';
 import { Slide } from 'src/app/data/interfaces/slide';
 import { MiniatureSlideComponent } from '../miniature-slide/miniature-slide.component';
 import { MdEditorService } from 'src/app/core/services/md-editor.service';
+import { NbDialogService } from '@nebular/theme';
+import { NewSlideDialogComponent } from '../new-slide-dialog/new-slide-dialog.component';
 
 @Component({
     selector: 'app-miniatures',
@@ -24,7 +26,8 @@ export class MiniaturesComponent implements OnInit, AfterViewInit, OnDestroy {
 
     constructor(
         private presentationService: PresentationService,
-        private mdEditorService: MdEditorService
+        private mdEditorService: MdEditorService,
+        private nbDialogService: NbDialogService
     ) {
         this.newSlideCreated = false;
     }
@@ -60,9 +63,15 @@ export class MiniaturesComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     newSlide() {
-        const newSlide = this.presentationService.addNewSlide();
-        this.newSlideCreated = true;
-        this.presentationService.changeCurrentSlide(newSlide);
+        const newSlideDialog = this.nbDialogService.open(NewSlideDialogComponent)
+            .onClose.subscribe(res => {
+                if (res?.name) {
+                    const newSlide = this.presentationService.addNewSlide(res.name);
+                    this.newSlideCreated = true;
+                    this.presentationService.changeCurrentSlide(newSlide);
+                }
+                newSlideDialog.unsubscribe();
+            });
     }
 
     selectMiniatureSlide(slideElement: MiniatureSlideComponent) {
