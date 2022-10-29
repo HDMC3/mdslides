@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogService, NbSidebarService } from '@nebular/theme';
 import { Subscription } from 'rxjs';
 import { MdEditorService } from 'src/app/core/services/md-editor.service';
+import { PresentationFileService } from 'src/app/core/services/presentation-file.service';
 import { PresentationService } from 'src/app/core/services/presentation.service';
 import { EditorChangeData } from 'src/app/core/types/editor-change-data';
 import { Presentation } from 'src/app/data/interfaces/presentation';
@@ -24,6 +25,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     isMdEditorActive: boolean;
     resizeObserver: ResizeObserver;
     editorValueSubscription?: Subscription;
+    downloadLoading: boolean;
 
     constructor(
         private themeService: ThemeService,
@@ -32,12 +34,14 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         private nbDialogService: NbDialogService,
         private presentationService: PresentationService,
         private mdEditorService: MdEditorService,
+        private presentatioFileService: PresentationFileService,
         private router: Router
     ) {
         this.themeButtonIcon = this.themeService.currentTheme === 'default' ? 'moon-outline' : 'sun-outline';
 
         this.isClickDivider = false;
         this.isMdEditorActive = false;
+        this.downloadLoading = false;
 
         this.resizeObserver = new ResizeObserver(() => {
             if (window.innerWidth <= 500 && this.mdEditor && this.currentSlide) {
@@ -158,6 +162,11 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.presentation && this.presentation.slides.length > 0) {
             this.router.navigate(['presentation'], { relativeTo: this.activatedRoute });
         }
+    }
+
+    downLoadPresentation() {
+        this.downloadLoading = true;
+        this.presentatioFileService.downloadPresentation().finally(() => { this.downloadLoading = false; });
     }
 
     toggleSidebar() {

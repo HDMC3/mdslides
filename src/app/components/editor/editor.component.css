@@ -12,6 +12,10 @@
     display: none;
 }
 
+#save-presentation {
+    display: none;
+}
+
 #show-presentation-button {
     display: none;
 }
@@ -101,12 +105,20 @@ nb-layout-column {
     padding: 0 !important;
 }
 
+.loading {
+    animation: loader 1s linear infinite;
+}
+
 @media screen and (min-width: 500px) {
     #menu-button {
         display: none;
     }
 
     #theme-button {
+        display: initial;
+    }
+
+    #save-presentation {
         display: initial;
     }
 
@@ -165,5 +177,15 @@ nb-layout-column {
     }
     to {
         transform: translateX(0);
+    }
+}
+
+@keyframes loader {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
     }
 }

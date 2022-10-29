@@ -15,6 +15,10 @@
                 <button id="theme-button" nbButton shape="round" size="large" ghost (click)="changeTheme()">
                     <nb-icon [icon]="themeButtonIcon"></nb-icon>
                 </button>
+                <button id="save-presentation" nbButton status="info" (click)="downLoadPresentation()" [disabled]="downloadLoading">
+                    Guardar 
+                    <nb-icon [ngClass]="{'loading': downloadLoading}" [icon]="downloadLoading ? 'loader-outline' : 'download'"></nb-icon>
+                </button>
                 <button id="show-presentation-button" nbButton status="success" (click)="showPresentation()">Presentar
                     <nb-icon icon="expand"></nb-icon>
                 </button>
@@ -24,6 +28,10 @@
 
     <nb-sidebar state="collapsed" fixed>
         <div class="sidebar-container">
+            <button nbButton status="info" fullWidth (click)="downLoadPresentation()" [disabled]="downloadLoading">
+                Guardar 
+                <nb-icon [ngClass]="{'loading': downloadLoading}" [icon]="downloadLoading ? 'loader' : 'download'"></nb-icon>
+            </button>
             <button nbButton status="success" fullWidth (click)="showPresentation()">Presentar
                 <nb-icon icon="expand"></nb-icon>
             </button>
