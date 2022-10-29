@@ -10,7 +10,6 @@ export class MaxLengthPipe implements PipeTransform {
         if (value.length > maxLength) {
             let newValue = '';
             const words = value.split(/\s/);
-            console.log(words);
             for (const word of words) {
                 if (`${newValue} ${word}`.length > maxLength) {
                     newValue += '...';
