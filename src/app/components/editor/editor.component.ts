@@ -155,7 +155,9 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     showPresentation() {
-        this.router.navigate(['presentation'], { relativeTo: this.activatedRoute });
+        if (this.presentation && this.presentation.slides.length > 0) {
+            this.router.navigate(['presentation'], { relativeTo: this.activatedRoute });
+        }
     }
 
     toggleSidebar() {

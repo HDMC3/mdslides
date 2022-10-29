@@ -34,7 +34,7 @@
     opacity: 1;
     border: none;
     background-color: var(--color-info-transparent-200);
-    transition: opacity 0.2s;
+    transition: opacity 0.3s;
 }
 
 .next {
