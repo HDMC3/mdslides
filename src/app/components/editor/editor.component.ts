@@ -56,7 +56,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
             this.presentation = presentation;
             if (presentation.slides.length === 0) {
                 this.mdEditorService.hiddeEditor();
-
+                return;
             }
             this.presentationService.changeCurrentSlide(presentation.slides[0]);
             this.setEditorValue({ value: presentation.slides[0].code, clearEditor: true });
@@ -81,7 +81,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     onMouseMoveDivider(e: PointerEvent) {
         if (!this.isClickDivider) return;
 
-        if (!this.mdEditor || !this.currentSlide || !this.divider) return;
+        if (!this.mdEditor || !this.currentSlide || !this.divider) throw new Error();
 
         if (window.innerWidth > 500) {
             const offset = e.clientX - this.divider.nativeElement.offsetLeft;
@@ -103,7 +103,7 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     switchView() {
-        if (!this.mdEditor || !this.currentSlide) return;
+        if (!this.mdEditor || !this.currentSlide) throw new Error();
 
         if (!this.isMdEditorActive) {
             this.currentSlide.nativeElement.classList.add('hidde-panel');
@@ -139,7 +139,9 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     fixWidthsWhenResize() {
-        if (window.innerHeight <= 500 || !this.mdEditor || !this.divider || !this.currentSlide) return;
+        if (!this.mdEditor || !this.divider || !this.currentSlide) throw new Error();
+
+        if (window.innerHeight <= 500) return;
 
         const mdEditorWidth = this.mdEditor.nativeElement.getBoundingClientRect().width;
         const dividerWidth = this.divider.nativeElement.getBoundingClientRect().width;

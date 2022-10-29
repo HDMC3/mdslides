@@ -16,7 +16,6 @@ export class PresentationViewComponent implements OnInit, AfterViewInit {
     isActive: boolean;
     presentation?: Presentation;
     offsetSlidesTrack: number;
-    presentationId?: string;
     currentSlide?: Slide;
     hiddeActionButtons: boolean;
 
@@ -37,7 +36,6 @@ export class PresentationViewComponent implements OnInit, AfterViewInit {
         this.elementRef.nativeElement.addEventListener('fullscreenchange', (e: any) => {
             if (this.isActive) {
                 this.activatedRoute.parent?.params.subscribe(params => {
-                    this.presentationId = params['id'];
                     this.router.navigate(['/']);
                 });
             }
@@ -76,7 +74,7 @@ export class PresentationViewComponent implements OnInit, AfterViewInit {
     }
 
     next = () => {
-        if (!this.presentation) return;
+        if (!this.presentation) throw new Error();
         const totalOffset = -this.presentation.slides.length * window.innerWidth;
 
         if (this.offsetSlidesTrack <= totalOffset) {
@@ -84,7 +82,7 @@ export class PresentationViewComponent implements OnInit, AfterViewInit {
             return;
         }
 
-        if (!this.slidesTrack) return;
+        if (!this.slidesTrack) throw new Error();
         this.offsetSlidesTrack -= window.innerWidth;
         this.slidesTrack.nativeElement.style.transform = `translateX(${this.offsetSlidesTrack}px)`;
     };
@@ -92,7 +90,7 @@ export class PresentationViewComponent implements OnInit, AfterViewInit {
     previous = () => {
         if (this.offsetSlidesTrack >= 0) return;
 
-        if (!this.slidesTrack) return;
+        if (!this.slidesTrack) throw new Error();
         this.offsetSlidesTrack += window.innerWidth;
         this.slidesTrack.nativeElement.style.transform = `translateX(${this.offsetSlidesTrack}px)`;
     };
@@ -108,7 +106,7 @@ export class PresentationViewComponent implements OnInit, AfterViewInit {
     }
 
     renderSlides() {
-        if (!this.slidesTrack || !this.presentation) return;
+        if (!this.slidesTrack || !this.presentation) throw new Error();
 
         const slidesElements = this.slidesTrack.nativeElement.querySelectorAll<HTMLElement>('.slide');
         let currentSlideIndex = 0;

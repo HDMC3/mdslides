@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostBinding, OnInit } from '@angular/core';
+import { Component, ElementRef, HostBinding, OnInit, AfterViewInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { NbDialogService } from '@nebular/theme';
 import { MarpitService } from 'src/app/core/services/marpit.service';
@@ -14,7 +14,7 @@ import { MarpitThemesDialogComponent } from '../marpit-themes-dialog/marpit-them
     templateUrl: './current-slide.component.html',
     styleUrls: ['./current-slide.component.css']
 })
-export class CurrentSlideComponent implements OnInit {
+export class CurrentSlideComponent implements OnInit, AfterViewInit {
 
     @HostBinding('style.--zoom') componentStyle = window.innerWidth <= 500 ? '0.3' : '0.4';
     editorValue: string[];
@@ -34,13 +34,6 @@ export class CurrentSlideComponent implements OnInit {
         this.editorValue = [];
         this.editorValueStr = '';
         this.editingSlideName = false;
-        this.mdEditorService.editorValue.subscribe(editorChangeData => {
-            const newEditorValueStr = editorChangeData.value.join('');
-            if (this.editorValueStr === newEditorValueStr) return;
-            this.renderSlide(editorChangeData.value);
-            this.editorValueStr = newEditorValueStr;
-            this.editorValue = editorChangeData.value;
-        });
         this.slideNameFormControl = new FormControl('', [Validators.required, FormValidators.noEmpty]);
     }
 
@@ -59,9 +52,17 @@ export class CurrentSlideComponent implements OnInit {
         });
     }
 
-    zoomSlide(action: 'max' | 'min') {
-        if (!this.componentRef) return;
+    ngAfterViewInit() {
+        this.mdEditorService.editorValue.subscribe(editorChangeData => {
+            const newEditorValueStr = editorChangeData.value.join('');
+            if (this.editorValueStr === newEditorValueStr) return;
+            this.renderSlide(editorChangeData.value);
+            this.editorValueStr = newEditorValueStr;
+            this.editorValue = editorChangeData.value;
+        });
+    }
 
+    zoomSlide(action: 'max' | 'min') {
         const currentZoom = this.componentRef.nativeElement.style.getPropertyValue('--zoom');
         const newZoom = action === 'max' ? Number.parseFloat(currentZoom) + 0.05 : Number.parseFloat(currentZoom) - 0.05;
 
@@ -72,7 +73,7 @@ export class CurrentSlideComponent implements OnInit {
 
     renderSlide(editorValue: string[]) {
         const currentSlideContainer = this.componentRef.nativeElement.querySelector('.current-slide-container');
-        if (!currentSlideContainer) return;
+        if (!currentSlideContainer) throw new Error();
 
         let shadowRoot = currentSlideContainer.shadowRoot;
         if (!shadowRoot) shadowRoot = currentSlideContainer.attachShadow({ mode: 'open' });
@@ -89,7 +90,8 @@ export class CurrentSlideComponent implements OnInit {
     }
 
     saveSlideName() {
-        if (this.slideNameFormControl.invalid || !this.currentSlide) return;
+        if (!this.currentSlide) throw new Error();
+        if (this.slideNameFormControl.invalid) return;
         this.currentSlide.name = this.slideNameFormControl.value;
         this.presentationService.updateStorage();
         this.editingSlideName = false;

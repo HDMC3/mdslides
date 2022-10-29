@@ -39,7 +39,7 @@ export class MiniaturesComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngAfterViewInit(): void {
-        if (!this.miniatures) return;
+        if (!this.miniatures) throw new Error();
         this.miniaturesChangesSubscription = this.miniatures?.changes
             .subscribe((queryList: QueryList<MiniatureSlideComponent>) => {
                 if (this.newSlideCreated && queryList.length > 0) {
@@ -83,7 +83,7 @@ export class MiniaturesComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     deleteMiniatureSlide(index: number) {
-        if (!this.presentation || !this.miniatures || !this.selectedMiniature) return;
+        if (!this.presentation || !this.miniatures || !this.selectedMiniature) throw new Error();
 
         if (this.miniatures.length === 1) {
             this.presentationService.deleteSlide(index);
