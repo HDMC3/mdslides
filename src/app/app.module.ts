@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NbThemeModule, NbLayoutModule, NbIconModule, NbButtonModule, NbSidebarModule, NbInputModule, NbDialogModule, NbCardModule } from '@nebular/theme';
+import { NbThemeModule, NbLayoutModule, NbIconModule, NbButtonModule, NbSidebarModule, NbInputModule, NbDialogModule, NbCardModule, NbToastrModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { EditorComponent } from './components/editor/editor.component';
 import { EditTitleDialogComponent } from './components/edit-title-dialog/edit-title-dialog.component';
@@ -18,6 +18,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MarpitThemesDialogComponent } from './components/marpit-themes-dialog/marpit-themes-dialog.component';
 import { NewSlideDialogComponent } from './components/new-slide-dialog/new-slide-dialog.component';
 import { PresentationViewComponent } from './components/presentation-view/presentation-view.component';
+import { GlobalErrorHandlerService } from './core/services/global-error-handler.service';
 
 @NgModule({
     declarations: [
@@ -47,10 +48,13 @@ import { PresentationViewComponent } from './components/presentation-view/presen
         NbCardModule,
         NbDialogModule.forRoot(),
         NbSidebarModule.forRoot(),
+        NbToastrModule.forRoot(),
         NbEvaIconsModule,
         DragDropModule
     ],
-    providers: [],
+    providers: [
+        { provide: ErrorHandler, useClass: GlobalErrorHandlerService }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

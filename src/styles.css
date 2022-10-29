@@ -1,4 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+    height: 100vh
+}
+
 nb-layout-header nav.fixed {
     box-shadow: none;
     border-bottom: 4px solid var(--color-basic-transparent-200);
@@ -50,6 +54,15 @@ nb-layout-header nav.fixed {
     border-left: 0;
 }
 
-body {
-    height: 100vh
+.error-toastr .icon-container nb-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.error-toastr .icon-container {
+    background-color: var(--toastr-danger-background-color) !important;
+}
+
+.error-toastr:hover .icon-container {
+    background-color: var(--toastr-destroyable-danger-hover-background-color) !important;
 }
