@@ -1,8 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, HostListener, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogService, NbSidebarService } from '@nebular/theme';
 import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
 import { MdEditorService } from 'src/app/core/services/md-editor.service';
 import { PresentationService } from 'src/app/core/services/presentation.service';
 import { EditorChangeData } from 'src/app/core/types/editor-change-data';
@@ -32,7 +31,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private nbDialogService: NbDialogService,
         private presentationService: PresentationService,
-        private mdEditorService: MdEditorService
+        private mdEditorService: MdEditorService,
+        private router: Router
     ) {
         this.themeButtonIcon = this.themeService.currentTheme === 'default' ? 'moon-outline' : 'sun-outline';
 
@@ -44,25 +44,26 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.mdEditor.nativeElement.style = '';
                 this.currentSlide.nativeElement.style.width = '';
             }
+
+            this.fixWidthsWhenResize();
+
             this.setEditorContainerHeight();
         });
     }
 
     ngOnInit(): void {
-        this.activatedRoute.params.pipe(take(1)).subscribe(params => {
-            this.presentation = this.presentationService.initPresentation(params['id']);
+        this.presentationService.presentation$.pipe().subscribe(presentation => {
+            this.presentation = presentation;
+            if (presentation.slides.length === 0) {
+                this.mdEditorService.hiddeEditor();
+
+            }
+            this.presentationService.changeCurrentSlide(presentation.slides[0]);
+            this.setEditorValue({ value: presentation.slides[0].code, clearEditor: true });
         });
     }
 
     ngAfterViewInit(): void {
-        this.presentationService.presentation$.pipe(take(1)).subscribe(presentation => {
-            if (presentation.slides.length === 0) {
-                this.mdEditorService.hiddeEditor();
-                return;
-            }
-            this.setEditorValue({ value: presentation.slides[0].code, clearEditor: true });
-        });
-
         this.editorValueSubscription = this.mdEditorService.editorValue.subscribe(editorChangeData => {
             this.presentationService.updateCurrentSlideCode(editorChangeData.value);
         });
@@ -135,6 +136,24 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
             const bodyH = document.body.getBoundingClientRect().height;
             editor.style.height = `${bodyH - (headerH + miniaturesH)}px`;
         }
+    }
+
+    fixWidthsWhenResize() {
+        if (window.innerHeight <= 500 || !this.mdEditor || !this.divider || !this.currentSlide) return;
+
+        const mdEditorWidth = this.mdEditor.nativeElement.getBoundingClientRect().width;
+        const dividerWidth = this.divider.nativeElement.getBoundingClientRect().width;
+        const currentSlideWidth = this.currentSlide.nativeElement.getBoundingClientRect().width;
+        const totalWidthElements = mdEditorWidth + dividerWidth + currentSlideWidth;
+        if (totalWidthElements < window.innerWidth) {
+            const offset = (window.innerWidth - totalWidthElements) / 2;
+            this.mdEditor.nativeElement.style.width = `${mdEditorWidth + offset}px`;
+            this.currentSlide.nativeElement.style.width = `${currentSlideWidth + offset}px`;
+        }
+    }
+
+    showPresentation() {
+        this.router.navigate(['presentation'], { relativeTo: this.activatedRoute });
     }
 
     toggleSidebar() {

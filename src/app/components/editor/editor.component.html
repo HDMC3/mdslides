@@ -15,12 +15,18 @@
                 <button id="theme-button" nbButton shape="round" size="large" ghost (click)="changeTheme()">
                     <nb-icon [icon]="themeButtonIcon"></nb-icon>
                 </button>
+                <button id="show-presentation-button" nbButton status="success" (click)="showPresentation()">Presentar
+                    <nb-icon icon="expand"></nb-icon>
+                </button>
             </div>
         </div>
     </nb-layout-header>
 
     <nb-sidebar state="collapsed" fixed>
         <div class="sidebar-container">
+            <button nbButton status="success" fullWidth (click)="showPresentation()">Presentar
+                <nb-icon icon="expand"></nb-icon>
+            </button>
             <button nbButton shape="round" size="large" ghost (click)="changeTheme()">
                 <nb-icon [icon]="themeButtonIcon"></nb-icon>
             </button>

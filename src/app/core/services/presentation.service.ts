@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Presentation } from 'src/app/data/interfaces/presentation';
 import { Slide } from 'src/app/data/interfaces/slide';
-import { v4 } from 'uuid';
 import { getInitialPresentation } from '../default-models/initial-presentation';
 import { getNewSlide } from '../default-models/new-slide';
 
@@ -18,27 +17,21 @@ export class PresentationService {
     private currentSlide: Slide | undefined;
 
     constructor(private location: Location) {
-        this.presentation = getInitialPresentation(v4());
+        this.presentation = this.initPresentation();
         this._presentation$ = new BehaviorSubject<Presentation>(this.presentation);
         this.currentSlide = this.presentation.slides[0];
         this._currentSlide$ = new BehaviorSubject<Slide | undefined>(this.currentSlide);
     }
 
-    initPresentation(id: string) {
-        const storagePresentationStr = localStorage.getItem(id);
+    initPresentation() {
+        const storagePresentationStr = localStorage.getItem('presentation');
         if (storagePresentationStr) {
-            const storagePresentation = JSON.parse(storagePresentationStr);
-            this._presentation$.next(storagePresentation);
-            this._currentSlide$.next(storagePresentation.slides[0]);
-            this.presentation = storagePresentation;
-            this.currentSlide = storagePresentation.slides[0];
+            const storagePresentation: Presentation = JSON.parse(storagePresentationStr);
             return storagePresentation;
         }
 
-        this.location.replaceState(`/${this.presentation.id}`);
+        this.presentation = getInitialPresentation();
         this.updateStorage(this.presentation);
-        this._presentation$.next(this.presentation);
-        this._currentSlide$.next(this.presentation.slides[0]);
         return this.presentation;
     }
 
@@ -66,11 +59,11 @@ export class PresentationService {
         if (presentation) {
             this.presentation = presentation;
             const presentationStr = JSON.stringify(presentation);
-            localStorage.setItem(presentation.id, presentationStr);
+            localStorage.setItem('presentation', presentationStr);
             return;
         }
         const presentationStr = JSON.stringify(this.presentation);
-        localStorage.setItem(this.presentation.id, presentationStr);
+        localStorage.setItem('presentation', presentationStr);
     }
 
     changeCurrentSlide(slide: Slide | undefined) {

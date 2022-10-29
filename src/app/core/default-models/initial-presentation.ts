@@ -1,9 +1,9 @@
 import { v4 } from 'uuid';
 import { Presentation } from '../../data/interfaces/presentation';
 
-export const getInitialPresentation = (id: string): Presentation => {
+export const getInitialPresentation = (id?: string): Presentation => {
     return {
-        id,
+        id: id ?? v4(),
         title: 'Titulo de presentacion',
         creation_date: new Date(),
         modification_date: new Date(),

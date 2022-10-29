@@ -1,0 +1,60 @@
+.view-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.slides-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: none;
+}
+
+.slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+    /* padding: 2rem; */
+}
+
+.next, .previous {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 75px;
+    height: 100%;
+    opacity: 1;
+    border: none;
+    background-color: var(--color-info-transparent-200);
+    transition: opacity 0.2s;
+}
+
+.next {
+    right: 0;
+    border-left: 2px solid var(--color-primary-400);
+}
+
+.previous {
+    left: 0;
+    border-right: 2px solid var(--color-primary-400);
+}
+
+.next:hover, .previous:hover {
+    opacity: 1;
+}
+
+.next:active, .previous:active {
+    opacity: 0.2;
+}
+
+.hidde-action-buttons {
+    opacity: 0;
+}

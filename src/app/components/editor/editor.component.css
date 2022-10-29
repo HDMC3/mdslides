@@ -12,6 +12,10 @@
     display: none;
 }
 
+#show-presentation-button {
+    display: none;
+}
+
 .left-nav {
     display: flex;
     align-items: center;
@@ -103,6 +107,10 @@ nb-layout-column {
     }
 
     #theme-button {
+        display: initial;
+    }
+
+    #show-presentation-button {
         display: initial;
     }
 

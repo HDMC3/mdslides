@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EditorComponent } from './components/editor/editor.component';
+import { PresentationViewComponent } from './components/presentation-view/presentation-view.component';
 
 const routes: Routes = [
     {
@@ -8,8 +9,8 @@ const routes: Routes = [
         component: EditorComponent
     },
     {
-        path: ':id',
-        component: EditorComponent
+        path: 'presentation',
+        component: PresentationViewComponent
     }
 ];
 
