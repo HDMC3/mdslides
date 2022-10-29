@@ -6,8 +6,6 @@ export const getInitialPresentation = (id?: string): Presentation => {
         id: id ?? v4(),
         title: 'Titulo de presentacion',
         creation_date: new Date(),
-        modification_date: new Date(),
-        description: '',
         slides: [
             {
                 id: v4(),
