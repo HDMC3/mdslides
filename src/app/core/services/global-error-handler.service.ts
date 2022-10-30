@@ -1,5 +1,6 @@
 import { Injectable, ErrorHandler } from '@angular/core';
 import { NbToastrConfig, NbToastrService } from '@nebular/theme';
+import { ApplicationError } from '../application-error';
 
 @Injectable()
 export class GlobalErrorHandlerService implements ErrorHandler {
@@ -15,6 +16,17 @@ export class GlobalErrorHandlerService implements ErrorHandler {
     }
 
     handleError(error: Error): void {
+        console.error(error);
+
+        if (error instanceof ApplicationError) {
+            this.nbToastrService.danger(
+                error.message || 'Intenta recargar la pagina',
+                error.title || 'Ha ocurrido un problema',
+                this.toastrConfig
+            );
+            return;
+        }
+
         this.nbToastrService.danger(
             error.message || 'Intenta recargar la pagina',
             'Ha ocurrido un problema',

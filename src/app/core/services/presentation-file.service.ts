@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NbToastrService } from '@nebular/theme';
 import { Presentation } from 'src/app/data/interfaces/presentation';
+import { ApplicationError } from '../application-error';
 import { MarpitService } from './marpit.service';
 import { PresentationService } from './presentation.service';
 
@@ -26,7 +27,7 @@ export class PresentationFileService {
         const themePresentationStr = localStorage.getItem('marp-theme');
         const presentationStr = localStorage.getItem('presentation');
 
-        if (!themePresentationStr || !presentationStr) throw new Error('Problema al descargar presentacion');
+        if (!themePresentationStr || !presentationStr) throw new ApplicationError('Recarga la pagina e intenta de nuevo', 'Problema al descargar presentacion');
 
         const themePresentation = JSON.parse(themePresentationStr);
         const presentation: Presentation = JSON.parse(presentationStr);
@@ -41,7 +42,7 @@ export class PresentationFileService {
         const base64: string | ArrayBuffer | null = await this.convertToBase64(file);
 
         const a = document.createElement('a');
-        if (!a || !base64) throw new Error('Problema al descargar presentacion');
+        if (!a || !base64) throw new ApplicationError('Recarga la pagina e intenta de nuevo', 'Problema al descargar presentacion');
 
         a.href = base64.toString();
         a.download = `${presentation.title.toLowerCase().replace(/\s/g, '-')}.json`;
@@ -52,17 +53,25 @@ export class PresentationFileService {
     async openPresentationFile() {
         try {
             const file = await this.selectFile();
-            if (file.type !== 'application/json') throw new Error('Tipo de archivo invalido');
+            if (file.type !== 'application/json') throw new ApplicationError('Seleciona un archivo .json', 'Tipo de archivo invalido');
 
             const contentFile = await this.readJsonFile(file);
-            if (!contentFile) throw new Error('Problema al cargar archivo');
+            if (!contentFile) throw new ApplicationError('Recarga la pagina e intenta de nuevo', 'Problema al cargar archivo');
 
             const presentationData = this.parseJSONContent(contentFile.toString());
             this.checkParsedObject(presentationData);
             this.marpitService.setMarpitTheme(presentationData.theme);
             this.presentationService.loadPresentation(presentationData.presentation);
         } catch (error: any) {
-            this.nbToastrService.danger(error?.message, 'Ha ocurrido un problema', this.toastrConfig);
+            if (error instanceof ApplicationError) {
+                this.nbToastrService.danger(
+                    error?.message || 'Intenta recargar la pagina',
+                    error?.title || 'Ha ocurrido un problema',
+                    this.toastrConfig
+                );
+                return;
+            }
+            this.nbToastrService.danger(error?.message || 'Intenta recargar la pagina', 'Ha ocurrido un problema', this.toastrConfig);
         }
     }
 
@@ -72,12 +81,12 @@ export class PresentationFileService {
             inputFile.type = 'file';
             inputFile.onchange = (e: any) => {
                 if (!e.target) {
-                    reject(new Error('Problema al cargar archivo'));
+                    reject(new ApplicationError('Intenta nuevamente', 'Problema al cargar archivo'));
                     return;
                 }
 
                 if (!e.target.files) {
-                    reject(new Error('Problema al cargar archivo'));
+                    reject(new ApplicationError('Intenta nuevamente', 'Problema al cargar archivo'));
                     return;
                 }
 
@@ -97,7 +106,7 @@ export class PresentationFileService {
         return new Promise((resolve: (value: string | ArrayBuffer | null) => void, reject) => {
             const reader = new FileReader();
             reader.onerror = () => {
-                reject(new Error('Problema al descargar presentacion'));
+                reject(new ApplicationError('Intenta nuevamente', 'Problema al descargar presentacion'));
             };
             reader.onload = () => {
                 resolve(reader.result);
@@ -110,7 +119,7 @@ export class PresentationFileService {
         return new Promise((resolve: (jsonData: string | ArrayBuffer | null) => void, reject) => {
             const reader = new FileReader();
             reader.onerror = () => {
-                reject(new Error('Problema al cargar presentacion'));
+                reject(new ApplicationError('Intenta nuevamente', 'Problema al cargar presentacion'));
             };
             reader.onload = () => {
                 resolve(reader.result);
@@ -124,22 +133,22 @@ export class PresentationFileService {
             const presentationData = JSON.parse(contentFile);
             return presentationData;
         } catch (error: any) {
-            throw new Error('El archivo no es valido');
+            throw new ApplicationError('Seleciona un archivo .json valido', 'El archivo no es valido');
         }
     }
 
     private checkParsedObject(parsedObj: any) {
-        if (!parsedObj.theme || !parsedObj.presentation) throw new Error('La presentacion no es valida');
+        if (!parsedObj.theme || !parsedObj.presentation) throw new ApplicationError('La presentacion no es valida', 'Problema al cargar el archivo');
 
-        if (typeof parsedObj.theme !== 'object' || typeof parsedObj.presentation !== 'object') throw new Error('La presentacion no es valida');
+        if (typeof parsedObj.theme !== 'object' || typeof parsedObj.presentation !== 'object') throw new ApplicationError('La presentacion no es valida', 'Problema al cargar el archivo');
 
         const themeEntries = Object.entries(parsedObj.theme).sort();
         const correctThemeEntries = Object.entries({ name: '', theme: '', colors: [''] }).sort();
-        if (themeEntries.length !== correctThemeEntries.length) throw new Error('La presentacion no es valida');
+        if (themeEntries.length !== correctThemeEntries.length) throw new ApplicationError('La presentacion no es valida', 'Problema al cargar el archivo');
 
         for (let i = 0; i < correctThemeEntries.length; i++) {
             if (themeEntries[i][0] !== correctThemeEntries[i][0] ||
-                typeof themeEntries[i][1] !== typeof correctThemeEntries[i][1]) throw new Error('La presentacion no es valida');
+                typeof themeEntries[i][1] !== typeof correctThemeEntries[i][1]) throw new ApplicationError('La presentacion no es valida', 'Problema al cargar el archivo');
         }
 
         const presentationEntries = Object.entries(parsedObj.presentation).sort();
@@ -147,7 +156,7 @@ export class PresentationFileService {
 
         for (let i = 0; i < correctPresentationEntries.length; i++) {
             if (presentationEntries[i][0] !== correctPresentationEntries[i][0] ||
-                typeof presentationEntries[i][1] !== typeof correctPresentationEntries[i][1]) throw new Error('La presentacion no es valida');
+                typeof presentationEntries[i][1] !== typeof correctPresentationEntries[i][1]) throw new ApplicationError('La presentacion no es valida', 'Problema al cargar el archivo');
         }
     }
 }

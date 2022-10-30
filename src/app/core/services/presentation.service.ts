@@ -90,12 +90,4 @@ export class PresentationService {
     get currentSlide$() {
         return this._currentSlide$.asObservable();
     }
-
-    private getPresentationStorage() {
-        const storagePresentationStr = localStorage.getItem(this.presentation.id);
-        if (!storagePresentationStr) throw new Error('Problema al crear diapositiva');
-
-        const storagePresentation: Presentation = JSON.parse(storagePresentationStr);
-        return storagePresentation;
-    }
 }
