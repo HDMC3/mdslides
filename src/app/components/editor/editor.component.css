@@ -12,6 +12,10 @@
     display: none;
 }
 
+#open-presentation-button {
+    display: none;
+}
+
 #save-presentation {
     display: none;
 }
@@ -109,12 +113,16 @@ nb-layout-column {
     animation: loader 1s linear infinite;
 }
 
-@media screen and (min-width: 500px) {
+@media screen and (min-width: 768px) {
     #menu-button {
         display: none;
     }
 
     #theme-button {
+        display: initial;
+    }
+
+    #open-presentation-button {
         display: initial;
     }
 

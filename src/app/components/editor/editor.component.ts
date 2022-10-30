@@ -169,6 +169,10 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
         this.presentatioFileService.downloadPresentation().finally(() => { this.downloadLoading = false; });
     }
 
+    openPresentationFile() {
+        this.presentatioFileService.openPresentationFile();
+    }
+
     toggleSidebar() {
         this.nbSidebarService.toggle();
     }

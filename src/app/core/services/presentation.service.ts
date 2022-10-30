@@ -78,6 +78,11 @@ export class PresentationService {
         this.updateStorage(this.presentation);
     }
 
+    loadPresentation(presentation: Presentation) {
+        this.updateStorage(presentation);
+        this._presentation$.next(presentation);
+    }
+
     get presentation$() {
         return this._presentation$.asObservable();
     }
