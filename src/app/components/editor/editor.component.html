@@ -15,11 +15,14 @@
                 <button id="theme-button" nbButton shape="round" size="large" ghost (click)="changeTheme()">
                     <nb-icon [icon]="themeButtonIcon"></nb-icon>
                 </button>
+                <button id="new-presentation-button" nbButton (click)="createNewPresentation()">
+                    <nb-icon icon="file"></nb-icon>
+                </button>
                 <button id="open-presentation-button" nbButton status="warning" (click)="openPresentationFile()">
                     <nb-icon icon="folder"></nb-icon>
                 </button>
-                <button id="save-presentation" nbButton status="info" (click)="downLoadPresentation()" [disabled]="downloadLoading">
-                    <nb-icon [ngClass]="{'loading': downloadLoading}" [icon]="downloadLoading ? 'loader-outline' : 'download'"></nb-icon>
+                <button id="save-presentation" nbButton status="info" (click)="downLoadPresentation()" [disabled]="downloadingFile">
+                    <nb-icon [ngClass]="{'loading': downloadingFile}" [icon]="downloadingFile ? 'loader-outline' : 'download'"></nb-icon>
                 </button>
                 <button id="show-presentation-button" nbButton status="success" (click)="showPresentation()">Presentar
                     <nb-icon icon="expand"></nb-icon>
@@ -33,13 +36,17 @@
             <button nbButton status="success" fullWidth (click)="showPresentation()">Presentar
                 <nb-icon icon="expand"></nb-icon>
             </button>
-            <button nbButton status="info" fullWidth (click)="downLoadPresentation()" [disabled]="downloadLoading">
+            <button nbButton status="info" fullWidth (click)="downLoadPresentation()" [disabled]="downloadingFile">
                 Guardar 
-                <nb-icon [ngClass]="{'loading': downloadLoading}" [icon]="downloadLoading ? 'loader' : 'download'"></nb-icon>
+                <nb-icon [ngClass]="{'loading': downloadingFile}" [icon]="downloadingFile ? 'loader' : 'download'"></nb-icon>
             </button>
             <button nbButton status="warning" fullWidth>
                 Abrir
-                <nb-icon icon="upload"></nb-icon>
+                <nb-icon icon="folder"></nb-icon>
+            </button>
+            <button nbButton fullWidth (click)="createNewPresentation()">
+                Nueva
+                <nb-icon icon="file"></nb-icon>
             </button>
             <button nbButton shape="round" size="large" ghost (click)="changeTheme()">
                 <nb-icon [icon]="themeButtonIcon"></nb-icon>

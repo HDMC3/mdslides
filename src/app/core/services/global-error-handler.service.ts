@@ -16,8 +16,6 @@ export class GlobalErrorHandlerService implements ErrorHandler {
     }
 
     handleError(error: Error): void {
-        console.error(error);
-
         if (error instanceof ApplicationError) {
             this.nbToastrService.danger(
                 error.message || 'Intenta recargar la pagina',

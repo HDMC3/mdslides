@@ -2,12 +2,14 @@ import { Component, ElementRef, OnInit, ViewChild, AfterViewInit, HostListener, 
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbDialogService, NbSidebarService } from '@nebular/theme';
 import { Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { MdEditorService } from 'src/app/core/services/md-editor.service';
 import { PresentationFileService } from 'src/app/core/services/presentation-file.service';
 import { PresentationService } from 'src/app/core/services/presentation.service';
 import { EditorChangeData } from 'src/app/core/types/editor-change-data';
 import { Presentation } from 'src/app/data/interfaces/presentation';
 import { ThemeService } from 'src/app/shared/services/theme.service';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { EditTitleDialogComponent } from '../edit-title-dialog/edit-title-dialog.component';
 
 @Component({
@@ -25,7 +27,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     isMdEditorActive: boolean;
     resizeObserver: ResizeObserver;
     editorValueSubscription?: Subscription;
-    downloadLoading: boolean;
+    downloadingFile: boolean;
+    loadingFile: boolean;
 
     constructor(
         private themeService: ThemeService,
@@ -41,7 +44,8 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.isClickDivider = false;
         this.isMdEditorActive = false;
-        this.downloadLoading = false;
+        this.downloadingFile = false;
+        this.loadingFile = false;
 
         this.resizeObserver = new ResizeObserver(() => {
             if (window.innerWidth <= 500 && this.mdEditor && this.currentSlide) {
@@ -165,12 +169,43 @@ export class EditorComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     downLoadPresentation() {
-        this.downloadLoading = true;
-        this.presentatioFileService.downloadPresentation().finally(() => { this.downloadLoading = false; });
+        this.downloadingFile = true;
+        this.presentatioFileService.downloadPresentation().finally(() => { this.downloadingFile = false; });
     }
 
     openPresentationFile() {
-        this.presentatioFileService.openPresentationFile();
+        this.loadingFile = true;
+        this.nbDialogService.open(ConfirmDialogComponent, {
+            context: {
+                message: 'Los cambios que no se hayan descargado se perderan. Desea continuar?',
+                confirmButtonText: 'Abrir'
+            }
+        }).onClose.pipe(take(1)).subscribe({
+            next: (result: any) => {
+                if (result?.confirm) {
+                    this.presentatioFileService.openPresentationFile();
+                }
+                this.loadingFile = false;
+            },
+            error: _ => {
+                this.loadingFile = false;
+            }
+        });
+    }
+
+    createNewPresentation() {
+        this.nbDialogService.open(ConfirmDialogComponent, {
+            context: {
+                message: 'Los cambios que no se hayan descargado se perderan. Desea continuar?',
+                confirmButtonText: 'Crear'
+            }
+        }).onClose.pipe(take(1)).subscribe({
+            next: result => {
+                if (result?.confirm) {
+                    this.presentationService.createNewPresentation();
+                }
+            }
+        });
     }
 
     toggleSidebar() {

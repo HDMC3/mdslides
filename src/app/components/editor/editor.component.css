@@ -12,6 +12,10 @@
     display: none;
 }
 
+#new-presentation-button {
+    display: none;
+}
+
 #open-presentation-button {
     display: none;
 }
@@ -119,6 +123,10 @@ nb-layout-column {
     }
 
     #theme-button {
+        display: initial;
+    }
+
+    #new-presentation-button {
         display: initial;
     }
 

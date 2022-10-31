@@ -19,6 +19,7 @@ import { MarpitThemesDialogComponent } from './components/marpit-themes-dialog/m
 import { NewSlideDialogComponent } from './components/new-slide-dialog/new-slide-dialog.component';
 import { PresentationViewComponent } from './components/presentation-view/presentation-view.component';
 import { GlobalErrorHandlerService } from './core/services/global-error-handler.service';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
     declarations: [
@@ -32,7 +33,8 @@ import { GlobalErrorHandlerService } from './core/services/global-error-handler.
         MiniaturesComponent,
         MarpitThemesDialogComponent,
         NewSlideDialogComponent,
-        PresentationViewComponent
+        PresentationViewComponent,
+        ConfirmDialogComponent
     ],
     imports: [
         BrowserModule,

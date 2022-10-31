@@ -1,0 +1,33 @@
+nb-card {
+    max-width: 90vw;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert-icon {
+    width: 5rem;
+    height: 5rem;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.message {
+    max-width: 40ch;
+    margin: 0;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+@media screen and (min-width: 768px) {
+    nb-card {
+        min-width: 350px;
+    }
+}

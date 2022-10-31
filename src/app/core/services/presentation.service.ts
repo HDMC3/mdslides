@@ -83,6 +83,14 @@ export class PresentationService {
         this._presentation$.next(presentation);
     }
 
+    createNewPresentation() {
+        this.presentation = getInitialPresentation();
+        this.currentSlide = this.presentation.slides[0];
+        this._presentation$.next(this.presentation);
+        this._currentSlide$.next(this.currentSlide);
+        this.updateStorage();
+    }
+
     get presentation$() {
         return this._presentation$.asObservable();
     }

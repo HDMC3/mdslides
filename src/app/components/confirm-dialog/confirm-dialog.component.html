@@ -1,0 +1,14 @@
+<nb-card>
+    <nb-card-body>
+        <div class="card-body">
+            <nb-icon class="alert-icon" status="warning" icon="alert-triangle-outline"></nb-icon>
+            <h6 class="message">{{ message }}</h6>
+        </div>
+    </nb-card-body>
+    <nb-card-footer>
+        <div class="card-footer">
+            <button nbButton status="danger" (click)="close(false)">Cancelar</button>
+            <button nbButton status="success" (click)="close(true)">{{ confirmButtonText }}</button>
+        </div>
+    </nb-card-footer>
+</nb-card>
