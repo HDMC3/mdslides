@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NbThemeModule, NbLayoutModule, NbIconModule, NbButtonModule, NbSidebarModule, NbInputModule, NbDialogModule, NbCardModule, NbToastrModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
-import { EditorComponent } from './components/editor/editor.component';
+import { EditorComponent } from './pages/editor/editor.component';
 import { EditTitleDialogComponent } from './components/edit-title-dialog/edit-title-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MdEditorComponent } from './components/md-editor/md-editor.component';

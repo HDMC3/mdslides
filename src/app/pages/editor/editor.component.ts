@@ -9,8 +9,8 @@ import { PresentationService } from 'src/app/core/services/presentation.service'
 import { EditorChangeData } from 'src/app/core/types/editor-change-data';
 import { Presentation } from 'src/app/data/interfaces/presentation';
 import { ThemeService } from 'src/app/shared/services/theme.service';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { EditTitleDialogComponent } from '../edit-title-dialog/edit-title-dialog.component';
+import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
+import { EditTitleDialogComponent } from '../../components/edit-title-dialog/edit-title-dialog.component';
 
 @Component({
     selector: 'app-editor',
