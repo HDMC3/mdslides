@@ -1,27 +1,34 @@
-# Mdslides
+<div align="center">
+    <h1>MDSlides </h1>
+</div>
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.9.
+![captura-de-mdslides](mdslides-image.jpg)
 
-## Development server
+MDSlides es una aplicación web para crear presentaciones utilizando Markdown junto con las funcionalidades que ofrece el marcado de [Marpit Framework](https://marpit.marp.app/markdown). Tiene 4 temas disponibles para las presentaciones, una vista de exposición, y se puede descargar la presentación en formato json.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+# Tecnologías usadas
+## Frameworks y librerías
+- [Angular](https://angular.io/)
+- [Nebular](https://akveo.github.io/nebular/)
+- [Marpit](https://marpit.marp.app/)
+- [Codemirror](https://codemirror.net/)
 
-## Code scaffolding
+# Getting started
+1. Clonar repositorio
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```
+git clone https://github.com/HDMC3/mdslides.git
+```
 
-## Build
+2. Instalar dependencias
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```
+cd mdslides
+npm install
+```
 
-## Running unit tests
+3. Levantar servidor de desarrollo
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```
+npm run start
+```
