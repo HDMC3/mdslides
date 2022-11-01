@@ -8,12 +8,12 @@ nb-layout-header nav.fixed {
     border-bottom: 4px solid var(--color-basic-transparent-200);
 }
 
-/* Firefox */
+
 .cm-scroller, .current-slide-container {
     scrollbar-width: 1rem;
     scrollbar-color: var(--background-basic-color-3) var(--background-basic-color-2);
 }
-/* Chrome, Safari y Edge */
+
 .cm-scroller::-webkit-scrollbar, .current-slide-container::-webkit-scrollbar {
     width: 1rem;
 }
@@ -31,12 +31,12 @@ nb-layout-header nav.fixed {
     border-left: 0;
 }
 
-/* Firefox */
+
 .miniatures-section {
     scrollbar-width: 1rem;
     scrollbar-color: var(--background-basic-color-1) var(--background-basic-color-3);
 }
-/* Chrome, Safari y Edge */
+
 .miniatures-section::-webkit-scrollbar {
     width: 1rem;
 }
