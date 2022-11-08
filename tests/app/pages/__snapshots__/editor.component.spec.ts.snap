@@ -1,0 +1,173 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditorComponent should match the snapshot 1`] = `
+<div
+  id="root1"
+>
+  <nb-layout>
+    <nb-layout-header
+      fixed=""
+    >
+      <div
+        class="nav-container"
+      >
+        <div
+          class="left-nav"
+        >
+          <button
+            ghost=""
+            id="menu-button"
+            nbbutton=""
+          >
+            <nb-icon
+              icon="menu-outline"
+            />
+          </button>
+          <button
+            ghost=""
+            nbbutton=""
+            shape="round"
+          >
+            <nb-icon
+              icon="edit-outline"
+            />
+          </button>
+          <h4
+            class="title-presentation"
+          >
+            Titulo de presentacion
+          </h4>
+        </div>
+        <div
+          class="right-nav"
+        >
+          <button
+            ghost=""
+            id="theme-button"
+            nbbutton=""
+            shape="round"
+            size="large"
+          >
+            <nb-icon />
+          </button>
+          <button
+            id="new-presentation-button"
+            nbbutton=""
+          >
+            <nb-icon
+              icon="file"
+            />
+          </button>
+          <button
+            id="open-presentation-button"
+            nbbutton=""
+            status="warning"
+          >
+            <nb-icon
+              icon="folder"
+            />
+          </button>
+          <button
+            id="save-presentation"
+            nbbutton=""
+            status="info"
+          >
+            <nb-icon />
+          </button>
+          <button
+            id="show-presentation-button"
+            nbbutton=""
+            status="success"
+          >
+            Presentar 
+            <nb-icon
+              icon="expand"
+            />
+          </button>
+        </div>
+      </div>
+    </nb-layout-header>
+    <nb-sidebar
+      fixed=""
+      state="collapsed"
+    >
+      <div
+        class="sidebar-container"
+      >
+        <button
+          fullwidth=""
+          nbbutton=""
+          status="success"
+        >
+          Presentar 
+          <nb-icon
+            icon="expand"
+          />
+        </button>
+        <button
+          fullwidth=""
+          nbbutton=""
+          status="info"
+        >
+           Guardar 
+          <nb-icon />
+        </button>
+        <button
+          fullwidth=""
+          nbbutton=""
+          status="warning"
+        >
+           Abrir 
+          <nb-icon
+            icon="folder"
+          />
+        </button>
+        <button
+          fullwidth=""
+          nbbutton=""
+        >
+           Nueva 
+          <nb-icon
+            icon="file"
+          />
+        </button>
+        <button
+          ghost=""
+          nbbutton=""
+          shape="round"
+          size="large"
+        >
+          <nb-icon />
+        </button>
+      </div>
+    </nb-sidebar>
+    <nb-layout-column>
+      <main>
+        <section
+          class="editor-section"
+        >
+          <div
+            class="md-editor hidde-panel"
+          >
+            <app-md-editor />
+          </div>
+          <div
+            class="editor-section-divider"
+          />
+          <app-current-slide />
+          <button
+            id="switch-view-button"
+            nbbutton=""
+            status="info"
+          >
+            <nb-icon
+              icon="swap"
+            />
+          </button>
+        </section>
+        <app-miniatures />
+      </main>
+    </nb-layout-column>
+  </nb-layout>
+</div>
+`;

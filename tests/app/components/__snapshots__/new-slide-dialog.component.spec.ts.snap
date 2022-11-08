@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewSlideDialogComponent should match snapshot 1`] = `
+<div
+  id="root1"
+>
+  <nb-card>
+    <nb-card-header>
+      <h6>
+         Nueva diapositiva 
+      </h6>
+    </nb-card-header>
+    <nb-card-body>
+      <form
+        class="ng-untouched ng-pristine ng-valid"
+        novalidate=""
+      >
+        <label
+          for="name"
+        >
+          Nombre:
+        </label>
+        <input
+          autocomplete="off"
+          class="ng-untouched ng-pristine ng-invalid size-medium status-basic shape-rectangle"
+          id="name"
+          nbinput=""
+          type="text"
+        />
+        
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <div
+        class="dialog-footer"
+      >
+        <button
+          aria-disabled="false"
+          class="appearance-filled size-medium shape-rectangle status-danger"
+          nbbutton=""
+          status="danger"
+          tabindex="0"
+        >
+          Cancelar
+        </button>
+        <button
+          aria-disabled="false"
+          class="status-success appearance-filled size-medium shape-rectangle"
+          nbbutton=""
+          status="success"
+          tabindex="0"
+        >
+          Guardar
+        </button>
+      </div>
+    </nb-card-footer>
+  </nb-card>
+</div>
+`;

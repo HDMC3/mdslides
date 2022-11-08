@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MdEditorComponent shoudl match snapshot 1`] = `
+<div
+  id="root1"
+>
+  <div
+    class="cm-editor ͼ1 ͼ2 ͼ4 ͼo"
+    style="height: 100%;"
+  >
+    <div
+      aria-live="polite"
+      style="position: absolute; top: -10000px;"
+    />
+    <div
+      class="cm-scroller"
+      tabindex="-1"
+    >
+      <div
+        aria-hidden="true"
+        class="cm-gutters"
+        style="min-height: 28px; position: sticky;"
+      >
+        <div
+          class="cm-gutter cm-lineNumbers"
+        >
+          <div
+            class="cm-gutterElement"
+            style="height: 0px; visibility: hidden; pointer-events: none;"
+          >
+            9
+          </div>
+          <div
+            class="cm-gutterElement cm-activeLineGutter"
+            style="height: 14px;"
+          >
+            1
+          </div>
+          <div
+            class="cm-gutterElement"
+            style="height: 14px;"
+          >
+            2
+          </div>
+        </div>
+        <div
+          class="cm-gutter cm-foldGutter"
+        >
+          <div
+            class="cm-gutterElement"
+            style="height: 0px; visibility: hidden; pointer-events: none;"
+          >
+            <span
+              title="Unfold line"
+            >
+              ›
+            </span>
+          </div>
+          <div
+            class="cm-gutterElement cm-activeLineGutter"
+            style="height: 14px;"
+          />
+        </div>
+      </div>
+      <div
+        aria-autocomplete="list"
+        aria-multiline="true"
+        autocapitalize="off"
+        autocorrect="off"
+        class="cm-content cm-lineWrapping"
+        contenteditable="true"
+        role="textbox"
+        spellcheck="false"
+        style="tab-size: 4;"
+        translate="no"
+      >
+        <div
+          class="cm-activeLine cm-line"
+        >
+          <br />
+        </div>
+        <div
+          class="cm-line"
+        >
+          <br />
+        </div>
+      </div>
+      <div
+        aria-hidden="true"
+        class="cm-selectionLayer"
+      />
+      <div
+        aria-hidden="true"
+        class="cm-cursorLayer"
+        style="animation-duration: 1200ms;"
+      />
+    </div>
+  </div>
+</div>
+`;
