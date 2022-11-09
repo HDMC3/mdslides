@@ -7,7 +7,7 @@
     <nb-card-body>
         <form [formGroup]="titleForm">
             <label for="title">Titulo:</label>
-            <input formControlName="title" id="title" nbInput type="text" [status]="titleControlStatus" autocomplete="off">
+            <input formControlName="title" id="title" nbInput type="text" [status]="titleControlStatus" autocomplete="off" (keyup.enter)="save()">
             <small *ngIf="!titleForm.controls['title'].valid" style="color: var(--color-danger-500)">El titulo es requerido</small>
         </form>
     </nb-card-body>
