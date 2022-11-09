@@ -6,6 +6,12 @@ form {
 
 .dialog-footer {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
+}
+
+@media screen and (min-width: 768px) {
+    nb-card {
+        min-width: 350px;
+    }
 }
